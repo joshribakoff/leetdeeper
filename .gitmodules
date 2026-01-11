@@ -1,0 +1,9 @@
+[submodule "leetcode-py"]
+	path = leetcode-py
+	url = git@github.com:wislertt/leetcode-py.git
+[submodule "neetcode"]
+	path = neetcode
+	url = git@github.com:neetcode-gh/leetcode.git
+[submodule "python_leetcode_runner"]
+	path = python_leetcode_runner
+	url = git@github.com:tusharsadhwani/python_leetcode_runner.git
