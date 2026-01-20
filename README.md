@@ -9,11 +9,13 @@ leetdeeper/
 ├── practice/           # My solutions (the actual work)
 ├── completed.json      # Progress tracking
 ├── notes.md            # Learning notes and insights
+├── scripts/            # Utility scripts
+│   └── download_blind75.py  # Download NeetCode Blind 75 videos
 ├── neetcode/           # NeetCode curriculum (submodule)
 │   ├── articles/       # Written explanations
 │   ├── hints/          # Progressive hints
 │   ├── python/         # Reference solutions
-│   └── videos/         # Local only (gitignored, 1.6GB)
+│   └── videos/         # Downloaded videos (gitignored, ~1.6GB)
 ├── fucking-algorithm/  # Labuladong's algorithm book (submodule, my fork)
 ├── leetcode-py/        # LeetCode Python solutions (submodule)
 └── python_leetcode_runner/  # Test runner utility (submodule)
@@ -61,6 +63,17 @@ Or if you already cloned:
 ```bash
 git submodule update --init --recursive
 ```
+
+## Download NeetCode Videos
+
+The Blind 75 playlist videos can be downloaded locally for offline study:
+
+```bash
+pip install yt-dlp
+python scripts/download_blind75.py
+```
+
+Videos are saved to `neetcode/videos/` (~1.6GB total). The script adds random delays between downloads to avoid throttling.
 
 ## Progress
 

@@ -16,7 +16,9 @@ venv/
 .claude/
 
 # Local video content (1.6GB NeetCode videos - keep local, don't commit)
-neetcode/videos/
+# Scripts are committed; videos and logs are not
+neetcode/videos/*.mp4
+neetcode/videos/*.log
 
 # macOS
 .DS_Store
