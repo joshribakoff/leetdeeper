@@ -7,3 +7,6 @@
 [submodule "python_leetcode_runner"]
 	path = python_leetcode_runner
 	url = git@github.com:tusharsadhwani/python_leetcode_runner.git
+[submodule "fucking-algorithm"]
+	path = fucking-algorithm
+	url = https://github.com/joshribakoff/fucking-algorithm.git

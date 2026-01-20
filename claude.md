@@ -9,6 +9,13 @@ Preparing for Uber staff engineer interview. Learning Python while solving LeetC
 - Point out bugs but let user fix them
 - Run tests when asked
 - Only make edits when explicitly requested
+- **Write comparisons with left on the left and right on the right** - write `left < right` not `right > left`
+- **Format algorithm explanations in discrete steps:**
+  - One thing per step — state OR check OR operation, not mixed
+  - One condition per line
+  - Visual separators between steps
+  - When steps are short, use a grid/table layout (steps as rows, state/check/operation as columns)
+  - When steps are long, use vertical layout with separators
 
 ## Tooling
 
@@ -47,14 +54,11 @@ python -c "from solution import Solution; s = Solution(); print(s.two_sum([2,7,1
 
 ### Progress Tracking
 ```bash
-# Show progress across all lists
-python show_progress.py
-
-# Show progress by NeetCode pattern (roadmap order)
+# Show progress by NeetCode pattern (canonical - use this)
 python show_progress.py -p
 
-# Generate markdown report
-python show_progress.py --markdown
+# Show progress by list (Blind 75, etc.) - only if explicitly asked
+python show_progress.py
 ```
 
 Progress is tracked in `completed.json` - add entries when problems are solved.
@@ -76,3 +80,23 @@ Progress is tracked in `completed.json` - add entries when problems are solved.
 ## NeetCode Resources
 - `neetcode/hints/` - Progressive hints without spoilers
 - `neetcode/articles/` - Full explanations with intuition sections
+
+## Local Tools (not in PATH)
+- **FFmpeg**: `~/.local/bin/ffmpeg` - video/audio processing
+- **Poetry**: `~/.local/bin/poetry` - Python dependency management
+
+## Animation Pipeline
+The `animations/` directory contains a modular pipeline for generating narrated algorithm visualizations.
+
+### Quick Start
+```bash
+cd animations
+python build.py scenes/two_pointers/scene.json -v
+```
+
+### Architecture
+- **Scene specs**: `scenes/*/scene.json` - narration + visualization config (the product)
+- **Adapters**: Swappable components for TTS, animation, recording, merging
+- **Output**: `output/*/final.mp4` - synced video with narration
+
+See `animations/ARCHITECTURE.md` for full documentation.
