@@ -8,7 +8,7 @@ Usage:
 Requirements:
     pip install yt-dlp
 
-Videos are saved to neetcode/videos/ (gitignored).
+Videos are saved to videos/ at repo root (gitignored).
 """
 
 import subprocess
@@ -20,10 +20,10 @@ from pathlib import Path
 
 PLAYLIST_URL = "https://www.youtube.com/playlist?list=PLot-Xpze53ldVwtstag2TL4HQhAnC8ATf"
 
-# Output to neetcode/videos/ relative to repo root
+# Output to videos/ at repo root (not in submodule)
 SCRIPT_DIR = Path(__file__).parent
 REPO_ROOT = SCRIPT_DIR.parent
-OUTPUT_DIR = REPO_ROOT / "neetcode" / "videos"
+OUTPUT_DIR = REPO_ROOT / "videos"
 OUTPUT_TEMPLATE = str(OUTPUT_DIR / "%(playlist_index)03d - %(title)s [%(id)s].%(ext)s")
 
 # Random delay between videos (in seconds)
