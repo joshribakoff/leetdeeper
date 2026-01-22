@@ -33,7 +33,7 @@ Configured for Python development with LSP, fuzzy finding, and quick navigation.
 Claude helps me understand patterns, debug solutions, and learn from mistakes without giving away answers.
 
 ### Video Generation: LeetDreamer
-A sister project for generating narrated algorithm visualizations. See [joshribakoff/leetdreamer](https://github.com/joshribakoff/leetdreamer).
+Sister project for generating narrated algorithm visualizations. Write JSON, get a video where a robot explains sliding window while boxes dance. Perfect for when you finally understand something and want proof before you forget it again. See [joshribakoff/leetdreamer](https://github.com/joshribakoff/leetdreamer).
 
 ## Workflow
 
