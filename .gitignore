@@ -21,5 +21,8 @@ videos/
 # Legacy path (before moving to repo root)
 neetcode/videos/
 
+# Generated output (ephemeral, regenerate with show_progress.py)
+PROGRESS.md
+
 # macOS
 .DS_Store

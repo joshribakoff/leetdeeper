@@ -165,59 +165,58 @@ def progress_bar(done: int, total: int, width: int = 20) -> str:
     return "█" * filled + "░" * (width - filled)
 
 
-def show_progress(generate_markdown: bool = False):
-    """Display progress across all problem lists."""
-    # Load data
+def show_progress():
+    """Display progress across all problem lists to stdout."""
     completed = load_completed()
-    problems = load_problem_metadata()
+    tags = _load_tags()
 
-    # Load tags
-    if TAGS_FILE.exists():
-        with open(TAGS_FILE) as f:
-            tags = parse_json5_tags(f.read())
-    else:
-        print(f"Warning: Tags file not found: {TAGS_FILE}")
-        tags = {}
-
-    if generate_markdown:
-        output = ["# LeetCode Progress\n"]
-    else:
-        print("\n=== LeetCode Progress ===\n")
-
-    # Show progress per list
+    print("\n=== LeetCode Progress ===\n")
     for display_name, tag_name in LISTS.items():
         slugs = tags.get(tag_name, [])
         total = len(slugs)
         done = len(completed & set(slugs))
         pct = (done / total * 100) if total > 0 else 0
         bar = progress_bar(done, total)
+        print(f"{display_name:14} {done:3}/{total:<3} ({pct:4.0f}%) {bar}")
 
-        if generate_markdown:
-            output.append(f"## {display_name}: {done}/{total} ({pct:.0f}%)\n")
-            output.append(f"`{bar}`\n\n")
-        else:
-            print(f"{display_name:14} {done:3}/{total:<3} ({pct:4.0f}%) {bar}")
+    if completed:
+        print(f"\nCompleted: {len(completed)} problems")
 
-    if generate_markdown:
-        # Add detailed checklist per list
-        for display_name, tag_name in LISTS.items():
-            slugs = tags.get(tag_name, [])
-            output.append(f"\n### {display_name} Problems\n")
 
-            for slug in sorted(slugs):
-                info = problems.get(slug, {"number": "?", "title": slug, "difficulty": "?"})
-                check = "x" if slug in completed else " "
-                output.append(f"- [{check}] {info['number']}. {info['title']} ({info['difficulty']})\n")
+def generate_markdown_output() -> list[str]:
+    """Generate markdown progress report as list of lines."""
+    completed = load_completed()
+    problems = load_problem_metadata()
+    tags = _load_tags()
 
-        # Write to file
-        progress_file = SCRIPT_DIR / "PROGRESS.md"
-        with open(progress_file, "w") as f:
-            f.writelines(output)
-        print(f"Generated {progress_file}")
-    else:
-        # Show recent completions
-        if completed:
-            print(f"\nCompleted: {len(completed)} problems")
+    output = ["# LeetCode Progress\n"]
+    for display_name, tag_name in LISTS.items():
+        slugs = tags.get(tag_name, [])
+        total = len(slugs)
+        done = len(completed & set(slugs))
+        pct = (done / total * 100) if total > 0 else 0
+        bar = progress_bar(done, total)
+        output.append(f"## {display_name}: {done}/{total} ({pct:.0f}%)\n")
+        output.append(f"`{bar}`\n\n")
+
+    for display_name, tag_name in LISTS.items():
+        slugs = tags.get(tag_name, [])
+        output.append(f"\n### {display_name} Problems\n")
+        for slug in sorted(slugs):
+            info = problems.get(slug, {"number": "?", "title": slug, "difficulty": "?"})
+            check = "x" if slug in completed else " "
+            output.append(f"- [{check}] {info['number']}. {info['title']} ({info['difficulty']})\n")
+
+    return output
+
+
+def _load_tags() -> dict[str, list[str]]:
+    """Load tags from JSON5 file."""
+    if TAGS_FILE.exists():
+        with open(TAGS_FILE) as f:
+            return parse_json5_tags(f.read())
+    print(f"Warning: Tags file not found: {TAGS_FILE}")
+    return {}
 
 
 def show_patterns():
@@ -266,13 +265,24 @@ def show_patterns():
 
 
 def main():
-    generate_markdown = "--markdown" in sys.argv or "-m" in sys.argv
-    show_by_pattern = "--patterns" in sys.argv or "-p" in sys.argv
+    import argparse
+    parser = argparse.ArgumentParser(description="Show LeetCode progress")
+    parser.add_argument("-m", "--markdown", action="store_true", help="Output as markdown")
+    parser.add_argument("-p", "--patterns", action="store_true", help="Show progress by NeetCode pattern")
+    parser.add_argument("-o", "--output", type=str, help="Write to file instead of stdout")
+    args = parser.parse_args()
 
-    if show_by_pattern:
+    if args.patterns:
         show_patterns()
+    elif args.markdown:
+        output = generate_markdown_output()
+        if args.output:
+            Path(args.output).write_text("".join(output))
+            print(f"Wrote {args.output}")
+        else:
+            print("".join(output))
     else:
-        show_progress(generate_markdown)
+        show_progress()
 
 
 if __name__ == "__main__":
