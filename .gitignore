@@ -24,7 +24,8 @@ neetcode/videos/
 # Generated output (ephemeral, regenerate with show_progress.py)
 PROGRESS.md
 
-# Personal watch progress (local tracking, not shared)
+# Personal progress (local tracking, not shared)
+progress/
 watch_progress.jsonl
 
 # macOS
