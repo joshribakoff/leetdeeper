@@ -85,6 +85,23 @@ Progress is tracked in `completed.json` - add entries when problems are solved.
 - **FFmpeg**: `~/.local/bin/ffmpeg` - video/audio processing
 - **Poetry**: `~/.local/bin/poetry` - Python dependency management
 
+## YouTube / yt-dlp Rate Limiting
+
+**DO NOT hammer YouTube with sequential requests.** YouTube will rate limit and block.
+
+When fetching playlist info or downloading videos:
+1. **Single request**: OK for one-off checks
+2. **Multiple playlists**: Write a script with delays (5-20 min between requests), run in background
+3. **Batch downloads**: Use the existing `scripts/download_blind75.py` pattern with random delays
+
+Example for checking multiple playlists:
+```bash
+# Don't do this interactively - write a script and run in background
+python scripts/fetch_playlist_info.py --playlists playlists.txt --delay 300
+```
+
+If you need playlist info, ask the user to provide it or run a background script.
+
 ## Animation Pipeline
 The `animations/` directory contains a modular pipeline for generating narrated algorithm visualizations.
 
