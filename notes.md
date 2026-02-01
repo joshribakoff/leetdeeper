@@ -25,3 +25,7 @@
 ## Sorting
 
 - [ ] **Quicksort** - Pick pivot, partition (smaller left, larger right), recurse on halves. O(n log n) average. Vanilla uses last element as pivot; median-of-three avoids O(n²) on sorted input. Understood, not yet implemented.
+
+## 1-D Dynamic Programming
+
+- [ ] **Longest Increasing Subsequence** - Brute force checks all 2ⁿ subsequences (include/skip each element), verify each is increasing → O(n × 2ⁿ). DP works backwards asking "longest increasing subsequence starting at i?" Always at least 1 (element itself). Loop j through later positions (already cached since we're going backwards)—if nums[i] < nums[j], can extend with LIS[j]. → O(n²).

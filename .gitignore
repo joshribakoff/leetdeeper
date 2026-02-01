@@ -12,8 +12,9 @@ venv/
 *.swp
 *.swo
 
-# Claude
-.claude/
+# Claude (keep skills, ignore local state)
+.claude/settings*
+.claude/statsig*
 
 # Local video content (1.6GB NeetCode videos - keep local, don't commit)
 # Videos stored at repo root, not in neetcode submodule
@@ -24,8 +25,12 @@ neetcode/videos/
 # Generated output (ephemeral, regenerate with show_progress.py)
 PROGRESS.md
 
-# Personal watch progress (local tracking, not shared)
+# Personal progress (local tracking, not shared)
+/progress/
 watch_progress.jsonl
+
+# Download logs (generated)
+download_log.jsonl
 
 # macOS
 .DS_Store
