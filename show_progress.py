@@ -219,7 +219,7 @@ def _load_tags() -> dict[str, list[str]]:
     return {}
 
 
-def show_patterns():
+def show_patterns(verbose: bool = False):
     """Display progress by NeetCode pattern."""
     completed_nums = load_completed_numbers()
     patterns = load_neetcode_patterns()
@@ -230,7 +230,6 @@ def show_patterns():
 
     print("\n=== Progress by Pattern ===\n")
 
-    # Define pattern order (matches NeetCode roadmap progression)
     pattern_order = [
         "Arrays & Hashing",
         "Two Pointers",
@@ -263,17 +262,23 @@ def show_patterns():
         bar = progress_bar(done, total, width=15)
         print(f"{pattern:28} {done:2}/{total:<2} ({pct:3.0f}%) {bar}")
 
+        if verbose:
+            for p in sorted(probs, key=lambda x: x["number"]):
+                check = "✓" if p["number"] in completed_nums else " "
+                print(f"  [{check}] {p['number']:4}. {p['name']}")
+
 
 def main():
     import argparse
     parser = argparse.ArgumentParser(description="Show LeetCode progress")
     parser.add_argument("-m", "--markdown", action="store_true", help="Output as markdown")
     parser.add_argument("-p", "--patterns", action="store_true", help="Show progress by NeetCode pattern")
+    parser.add_argument("-v", "--verbose", action="store_true", help="Show individual problems")
     parser.add_argument("-o", "--output", type=str, help="Write to file instead of stdout")
     args = parser.parse_args()
 
     if args.patterns:
-        show_patterns()
+        show_patterns(verbose=args.verbose)
     elif args.markdown:
         output = generate_markdown_output()
         if args.output:
