@@ -38,8 +38,18 @@ END_INDEX = 75
 DENO_PATH = os.path.expanduser("~/.deno/bin")
 FFMPEG_PATH = os.path.expanduser("~/.local/bin")
 
+def video_exists(index):
+    """Check if video for this index already exists."""
+    pattern = f"{index:03d} - *.mp4"
+    return list(OUTPUT_DIR.glob(pattern))
+
+
 def download_video(index):
     """Download a single video by playlist index."""
+    if video_exists(index):
+        print(f"Video {index} already exists, skipping")
+        return True
+
     env = os.environ.copy()
     env["PATH"] = f"{DENO_PATH}:{FFMPEG_PATH}:{env['PATH']}"
 
@@ -62,35 +72,36 @@ def download_video(index):
 def main():
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
-    successful = 0
+    downloaded = 0
+    skipped = 0
     failed = []
 
     for i in range(START_INDEX, END_INDEX + 1):
+        if video_exists(i):
+            skipped += 1
+            print(f"Video {i} exists, skipping")
+            continue
+
         success = download_video(i)
 
         if success:
-            successful += 1
-            print(f"\n✓ Video {i} downloaded successfully ({successful} total)")
+            downloaded += 1
+            print(f"\n✓ Video {i} downloaded ({downloaded} new, {skipped} skipped)")
         else:
             failed.append(i)
-            print(f"\n✗ Video {i} failed to download")
+            print(f"\n✗ Video {i} failed")
 
-        # Sleep before next video (except for the last one)
-        if i < END_INDEX:
+        # Sleep before next download (not between skips)
+        remaining = [j for j in range(i + 1, END_INDEX + 1) if not video_exists(j)]
+        if remaining:
             delay = random.randint(MIN_DELAY, MAX_DELAY)
-            minutes = delay // 60
-            seconds = delay % 60
-            print(f"\nSleeping for {minutes}m {seconds}s before next video...")
-            print(f"(Next video: {i+1}/75)")
+            print(f"\nSleeping {delay // 60}m {delay % 60}s... ({len(remaining)} remaining)")
             time.sleep(delay)
 
     print(f"\n{'='*60}")
-    print(f"DOWNLOAD COMPLETE")
-    print(f"{'='*60}")
-    print(f"Successful: {successful}")
-    print(f"Failed: {len(failed)}")
+    print(f"COMPLETE: {downloaded} downloaded, {skipped} skipped, {len(failed)} failed")
     if failed:
-        print(f"Failed indices: {failed}")
+        print(f"Failed: {failed}")
 
 if __name__ == "__main__":
     main()
