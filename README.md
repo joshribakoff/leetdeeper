@@ -1,5 +1,47 @@
 # LeetDeeper
 
+A system for mastering algorithms through aggregated learning resources, unified curriculum mapping, and custom visualizations.
+
+## Vision
+
+LeetDeeper aims to solve a core problem in algorithm interview prep: resources are scattered, progress is siloed, and explanations are one-size-fits-all.
+
+**The idea:** Aggregate the best learning resources (NeetCode, Abdul Bari, MyCodeSchool, Labuladong, etc.), align them to a unified curriculum model, and layer on custom tools for visualization and progress tracking.
+
+### What This Could Become
+
+| Capability | Status |
+|------------|--------|
+| Multi-source video aggregation | In progress |
+| Unified problem/pattern taxonomy | Planned |
+| Progress tracking (videos, problems, patterns) | Basic local tracking |
+| AI-generated visualizations (via LeetDreamer) | Working prototype |
+| Spaced repetition scheduling | Planned |
+| Web platform with user accounts | Vision phase |
+
+### Competitive Positioning
+
+| Platform | Strengths | Gaps |
+|----------|-----------|------|
+| LeetCode | Problem database, community | Cluttered, paywalled, no video |
+| NeetCode | Clean roadmap, videos | Single perspective, static |
+| AlgoMonster | Structured curriculum | Paywalled, no customization |
+| **LeetDeeper** | Multi-source, AI video gen, open | Early stage |
+
+### Open Question: Personal Tool vs Platform
+
+Currently this is my personal study workspace. The architecture decisions ahead depend on which path to take:
+
+- **Personal tool**: Keep it local, optimize for my workflow, simpler
+- **Reusable framework**: Extract patterns others can use, more work upfront
+- **Full platform**: User accounts, hosted service, compete with NeetCode/AlgoMonster
+
+See `plans/leetdeeper/3k7f2-platform-vision.md` for the full roadmap.
+
+---
+
+## Current State
+
 Learning algorithms in public. This is my grinding workspace for LeetCode interview prep, complete with notes, workflows, and the knowledge bases I study from.
 
 ## What's Here
@@ -33,7 +75,7 @@ Configured for Python development with LSP, fuzzy finding, and quick navigation.
 Claude helps me understand patterns, debug solutions, and learn from mistakes without giving away answers.
 
 ### Video Generation: LeetDreamer
-Sister project for generating narrated algorithm visualizations. Write JSON, get a video where a robot explains sliding window while boxes dance. Perfect for when you finally understand something and want proof before you forget it again. See [joshribakoff/leetdreamer](https://github.com/joshribakoff/leetdreamer).
+The custom visualization engine powering LeetDeeper's AI-generated explanations. Write JSON scene specs, get narrated algorithm animations. In the platform vision, LeetDreamer becomes the backend for on-demand video generation—users request an explanation, the system generates a personalized walkthrough. See [joshribakoff/leetdreamer](https://github.com/joshribakoff/leetdreamer).
 
 ## Workflow
 
@@ -46,12 +88,16 @@ Sister project for generating narrated algorithm visualizations. Write JSON, get
 
 ## Knowledge Bases (Submodules)
 
+These submodules represent the "aggregation" layer—pulling together quality resources from multiple creators into a unified workspace. Future work: align these to a common problem/pattern taxonomy.
+
 | Submodule | Description |
 |-----------|-------------|
 | [neetcode](https://github.com/neetcode-gh/leetcode) | NeetCode's curriculum with solutions in 15+ languages |
 | [fucking-algorithm](https://github.com/joshribakoff/fucking-algorithm) | Labuladong's algorithm book (my fork with contributions) |
 | [leetcode-py](https://github.com/wislertt/leetcode-py) | Python LeetCode solutions |
 | [python_leetcode_runner](https://github.com/tusharsadhwani/python_leetcode_runner) | Utility for running LeetCode tests locally |
+
+**Potential additions:** Abdul Bari lectures, MyCodeSchool videos, Back To Back SWE, other high-quality educators.
 
 ## Clone with Submodules
 
@@ -75,12 +121,18 @@ python scripts/download_blind75.py
 
 Videos are saved to `neetcode/videos/` (~1.6GB total). The script adds random delays between downloads to avoid throttling.
 
-## Progress
+## Progress Tracking
 
-See `completed.json` for my current progress, or run:
+Currently basic local tracking via `completed.json`. Run:
 ```bash
 python show_progress.py -p  # Progress by pattern
 ```
+
+**Vision:** Track progress across multiple dimensions:
+- Problems solved (by pattern, difficulty, source)
+- Videos watched (across all aggregated sources)
+- Patterns mastered (based on solve rate + recency)
+- Spaced repetition scheduling for review
 
 ## License
 
