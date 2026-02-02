@@ -60,6 +60,10 @@
 
   **Overlapping subproblems**: Same index reachable through multiple paths (e.g., skip-skip vs take arrives at same position). Memoize or compute bottom-up.
 
+- [ ] **House Robber II** - Circular variant (first and last adjacent).
+
+  **Reduction**: Run House Robber I twice—once excluding first house, once excluding last. Take max. Both O(n), simpler than tracking "took first?" flag.
+
 ## 2-D Dynamic Programming
 
 - [ ] **Longest Common Subsequence** - Compare two strings. Three choices at each step:
