@@ -10,13 +10,14 @@ leetdeeper/
 ├── completed.json      # Progress tracking
 ├── notes.md            # Learning notes and insights
 ├── scripts/            # Utility scripts
-│   └── download_blind75.py  # Download NeetCode Blind 75 videos
+│   └── download_playlists.py  # Download video playlists
+├── videos/             # Downloaded videos (gitignored)
+│   └── by-id/          # Stored by YouTube ID, symlinked per playlist
 ├── neetcode/           # NeetCode curriculum (submodule)
 │   ├── articles/       # Written explanations
 │   ├── hints/          # Progressive hints
-│   ├── python/         # Reference solutions
-│   └── videos/         # Downloaded videos (gitignored, ~1.6GB)
-├── fucking-algorithm/  # Labuladong's algorithm book (submodule, my fork)
+│   └── python/         # Reference solutions
+├── fucking-algorithm/  # Labuladong's algorithm book (submodule)
 ├── leetcode-py/        # LeetCode Python solutions (submodule)
 └── python_leetcode_runner/  # Test runner utility (submodule)
 ```
@@ -64,16 +65,23 @@ Or if you already cloned:
 git submodule update --init --recursive
 ```
 
-## Download NeetCode Videos
+## Video Resources
 
-The Blind 75 playlist videos can be downloaded locally for offline study:
+Download curated playlists for offline study:
 
 ```bash
 pip install yt-dlp
-python scripts/download_blind75.py
+python scripts/download_playlists.py
 ```
 
-Videos are saved to `neetcode/videos/` (~1.6GB total). The script adds random delays between downloads to avoid throttling.
+| Source | Playlists |
+|--------|-----------|
+| **MIT OCW** | 6.006 Introduction to Algorithms (Erik Demaine) |
+| **NeetCode** | Blind 75, Dynamic Programming, Trees, Graphs, Backtracking, Binary Search, Linked List, Stack, Sliding Window |
+| **Abdul Bari** | Algorithms |
+| **mycodeschool** | Data Structures, Sorting, Binary Search, Recursion, Time Complexity, Interview Questions |
+
+Videos stored by ID in `videos/by-id/` with symlinks per playlist. The script handles deduplication and adds delays to avoid rate limiting.
 
 ## Progress
 
