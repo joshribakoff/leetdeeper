@@ -26,6 +26,20 @@
 
 - [ ] **Quicksort** - Pick pivot, partition (smaller left, larger right), recurse on halves. O(n log n) average. Vanilla uses last element as pivot; median-of-three avoids O(n²) on sorted input. Understood, not yet implemented.
 
+## Backtracking
+
+- [ ] **Combination Sum** - Find all combinations that sum to target. Can reuse elements.
+
+  **Two choices at each step**: Include current number (stay at same index, can reuse) or skip it (advance index, can't go back).
+
+  **Base cases**: Success when total equals target. Failure when total exceeds target or index out of bounds.
+
+  **How duplicates are avoided**: Index only moves forward. Once you skip a number, you can't return to it. This enforces an ordering—`[2,2,3]` is possible but `[3,2,2]` is not.
+
+  **Note**: This problem guarantees distinct candidates. Combination Sum II (LC 40) has duplicates and requires extra handling.
+
+  **Sorting optimization**: Sort candidates first. When `current_sum + candidates[i] > target`, break early—all subsequent candidates are larger, no point exploring.
+
 ## 1-D Dynamic Programming
 
 - [ ] **Longest Increasing Subsequence** - Brute force checks all 2ⁿ subsequences (include/skip each element), verify each is increasing → O(n × 2ⁿ). DP works backwards asking "longest increasing subsequence starting at i?" Always at least 1 (element itself). Loop j through later positions (already cached since we're going backwards)—if nums[i] < nums[j], can extend with LIS[j]. → O(n²).
@@ -37,6 +51,14 @@
   **Why not check every position?** You already know word lengths—jump directly to valid split points instead of O(n²) character-by-character scanning.
 
   **Where do overlapping subproblems come from?** Overlapping words in the dictionary—multiple word combinations that cover the same prefix. E.g., "pineapple" vs "pine" + "apple" both reach index 9. Without such overlap, only one path through the string exists and there's nothing to memoize.
+
+- [ ] **House Robber** - Max money from non-adjacent houses.
+
+  **Two choices at each house**: Take current value (must skip next house) or skip it (can take next). Return max of both.
+
+  **Recurrence**: `dp[i] = max(nums[i] + dp[i+2], dp[i+1])`
+
+  **Overlapping subproblems**: Same index reachable through multiple paths (e.g., skip-skip vs take arrives at same position). Memoize or compute bottom-up.
 
 ## 2-D Dynamic Programming
 

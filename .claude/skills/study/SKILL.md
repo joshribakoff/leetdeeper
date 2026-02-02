@@ -45,8 +45,8 @@ When user says "study", "next video", or uses `/study`:
    ```
    Article names vary (e.g., "combination-sum" vs "combination-target-sum").
 3. Preview article headers with `grep "^#" <article_path>`
-4. Open the video in VLC
-5. Open the article in kitty with glow
+4. Open the article in kitty with glow (first, so it's behind)
+5. Open the video in VLC (second, so it's on top and auto-plays)
 6. When user confirms they're done, run `python scripts/study.py mark <n>`
 7. Run `python scripts/progress_report.py` to show updated progress
 
@@ -54,8 +54,8 @@ When user says "study", "next video", or uses `/study`:
 
 User: "next video" / "study"
 -> Show video info
--> Open video in VLC
--> Open article in kitty with glow
+-> Open article in kitty with glow (behind)
+-> Open video in VLC (on top, auto-plays)
 
 User: "done" / "mark watched"
 -> Mark video as watched
