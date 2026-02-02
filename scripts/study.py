@@ -82,7 +82,7 @@ def get_video_info(index: int):
 
 def mark_watched(index: int):
     """Mark a video as watched."""
-    date = datetime.now().strftime("%Y-%m")
+    date = datetime.now().strftime("%Y-%m-%d")
     entry = {"playlist": "youtube_neetcode_blind75", "index": index, "date": date}
     
     with open(WATCHED_FILE, "a") as f:
