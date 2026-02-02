@@ -39,11 +39,16 @@ grep "^#" "<article_path>"
 When user says "study", "next video", or uses `/study`:
 
 1. Run `python scripts/study.py next` to show next unwatched
-2. Preview article headers with `grep "^#" <article_path>`
-3. Open the video in VLC
-4. Open the article in kitty with glow
-5. When user confirms they're done, run `python scripts/study.py mark <n>`
-6. Run `python scripts/progress_report.py` to show updated progress
+2. If article shows "Not found", search manually:
+   ```bash
+   ls neetcode/articles/ | grep -i "<keyword>"
+   ```
+   Article names vary (e.g., "combination-sum" vs "combination-target-sum").
+3. Preview article headers with `grep "^#" <article_path>`
+4. Open the video in VLC
+5. Open the article in kitty with glow
+6. When user confirms they're done, run `python scripts/study.py mark <n>`
+7. Run `python scripts/progress_report.py` to show updated progress
 
 ## Example Session
 
