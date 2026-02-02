@@ -1,7 +1,7 @@
-# LeetCode Interview Prep
+# LeetCode Practice
 
 ## Context
-Preparing for Uber staff engineer interview. Learning Python while solving LeetCode problems.
+Deliberate practice with algorithms and data structures. Staying sharp with Python problem-solving.
 
 ## Key Rules for Claude
 - **DO NOT show solutions** - let the user figure things out
@@ -54,14 +54,19 @@ python -c "from solution import Solution; s = Solution(); print(s.two_sum([2,7,1
 
 ### Progress Tracking
 ```bash
-# Show progress by NeetCode pattern (canonical - use this)
+# Comprehensive progress report with progress bars (use this)
+python scripts/progress_report.py
+
+# Legacy: progress by pattern
 python show_progress.py -p
 
-# Show progress by list (Blind 75, etc.) - only if explicitly asked
+# Legacy: progress by list (Blind 75, etc.)
 python show_progress.py
 ```
 
-Progress is tracked in `completed.json` - add entries when problems are solved.
+Progress is tracked in:
+- `completed.json` - problems solved (add entries when done)
+- `progress/watched.jsonl` - videos watched
 
 ## Workflow
 1. Pick a problem: `lcpy list -t blind-75`
@@ -84,6 +89,12 @@ Progress is tracked in `completed.json` - add entries when problems are solved.
 ## Local Tools (not in PATH)
 - **FFmpeg**: `~/.local/bin/ffmpeg` - video/audio processing
 - **Poetry**: `~/.local/bin/poetry` - Python dependency management
+
+## Video Playback
+When the user asks to open/play a video, always use VLC:
+```bash
+open -a VLC "/path/to/video.mp4"
+```
 
 ## YouTube / yt-dlp Rate Limiting
 

@@ -1,6 +1,6 @@
 # LeetDeeper
 
-Learning algorithms in public. This is my grinding workspace for LeetCode interview prep, complete with notes, workflows, and the knowledge bases I study from.
+Learning algorithms in public. A workspace for deliberate practice with data structures and algorithms—combating AI-induced brain rot one problem at a time.
 
 ## What's Here
 
@@ -37,7 +37,7 @@ Sister project for generating narrated algorithm visualizations. Write JSON, get
 
 ## Workflow
 
-1. **Pick a problem**: Start from NeetCode roadmap or Blind 75
+1. **Pick a problem**: Start from NeetCode roadmap or classic problem lists
 2. **Attempt solution**: Work in `practice/<problem>/solution.py`
 3. **Use hints progressively**: Check `neetcode/hints/` before solutions
 4. **Run tests**: `pytest practice/<problem>/test_solution.py -v`
@@ -89,3 +89,5 @@ My code is MIT. Submodules have their own licenses.
 ---
 
 *"The goal isn't to memorize solutions. It's to recognize patterns and understand why they work."*
+
+*Also: if you don't use it, you lose it.*
