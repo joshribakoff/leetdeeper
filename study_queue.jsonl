@@ -1,0 +1,5 @@
+{"problem": "Merge Intervals", "lc": 56, "sources": ["neetcode", "kevin"], "priority": 1, "reason": "interval foundation"}
+{"problem": "Insert Interval", "lc": 57, "sources": ["neetcode"], "priority": 2, "reason": "builds on merge"}
+{"problem": "Non-Overlapping Intervals", "lc": 435, "sources": ["neetcode"], "priority": 3, "reason": "greedy intervals"}
+{"problem": "Meeting Rooms", "lc": 252, "sources": ["neetcode", "kevin"], "priority": 4, "reason": "overlap detection"}
+{"problem": "Meeting Rooms II", "lc": 253, "sources": ["neetcode", "kevin"], "priority": 5, "reason": "sweep line - Anthropic style"}

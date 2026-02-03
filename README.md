@@ -71,24 +71,40 @@ Download curated playlists for offline study:
 
 ```bash
 pip install yt-dlp
-python scripts/download_playlists.py
+python scripts/download_playlists.py           # Main playlists
+python scripts/download_kevin.py               # Kevin Naughton (supplementary)
 ```
 
-| Source | Playlists |
-|--------|-----------|
-| **MIT OCW** | 6.006 Introduction to Algorithms (Erik Demaine) |
-| **NeetCode** | Blind 75, Dynamic Programming, Trees, Graphs, Backtracking, Binary Search, Linked List, Stack, Sliding Window |
-| **Abdul Bari** | Algorithms |
-| **mycodeschool** | Data Structures, Sorting, Binary Search, Recursion, Time Complexity, Interview Questions |
+| Source | Content | Videos |
+|--------|---------|--------|
+| **NeetCode** | Blind 75, DP, Trees, Graphs, Backtracking, Binary Search, Linked List, Stack, Sliding Window | ~300 |
+| **Kevin Naughton Jr.** | LeetCode solutions with clear, brief explanations | 124 |
+| **MIT OCW** | 6.006 Introduction to Algorithms (Erik Demaine) | 34 |
+| **Abdul Bari** | Algorithms fundamentals | 84 |
+| **mycodeschool** | Data Structures, Sorting, Binary Search, Recursion, Time Complexity | ~80 |
 
-Videos stored by ID in `videos/by-id/` with symlinks per playlist. The script handles deduplication and adds delays to avoid rate limiting.
+Videos stored by ID with symlinks per playlist. Scripts handle deduplication and rate limiting.
 
-## Progress
+### Regenerating Playlists
 
-See `completed.json` for my current progress, or run:
+Playlist metadata is cached in `playlists/*.jsonl`. To regenerate:
 ```bash
-python show_progress.py -p  # Progress by pattern
+./scripts/generate_kevin_playlist.sh  # Kevin Naughton (filtered to LeetCode only)
 ```
+
+## Progress Tracking
+
+```bash
+python scripts/progress_report.py    # Blind 75 progress with bars
+python scripts/track.py status       # Multi-source watch progress
+python scripts/track.py queue        # View study queue
+```
+
+Progress files:
+- `completed.json` - Problems solved
+- `progress/watched.jsonl` - Blind 75 videos watched
+- `progress/watched_multi.jsonl` - Multi-source video tracking
+- `study_queue.jsonl` - Bookmarked problems to study
 
 ## License
 

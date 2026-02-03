@@ -9,39 +9,34 @@ Interactive workflow for studying Blind 75 videos with articles.
 
 ## Commands
 
-Show video info (pattern, difficulty, paths):
+### Blind 75 Progress (legacy)
 ```bash
-python scripts/study.py show <n>
+python scripts/study.py show <n>    # Show video info
+python scripts/study.py next        # Next unwatched
+python scripts/study.py mark <n>    # Mark watched
 ```
 
-Show next unwatched video:
+### Multi-Source Tracking (new)
 ```bash
-python scripts/study.py next
+python scripts/track.py watch <source> <youtube_id> "<problem>"  # Mark watched
+python scripts/track.py status      # Progress by source
+python scripts/track.py queue       # View study queue
+python scripts/track.py queue add "<problem>" <lc_num> "<reason>"
+python scripts/track.py queue done "<problem>"
 ```
 
-Mark video as watched:
-```bash
-python scripts/study.py mark <n>
-```
-
-Open video in VLC:
+### Open Videos/Articles
 ```bash
 open -a VLC "<video_path>"
-```
-
-Open article in kitty with glow:
-```bash
 /Applications/kitty.app/Contents/MacOS/kitty --single-instance ~/go/bin/glow -p "<article_path>" &
+grep "^#" "<article_path>"  # Preview headers
 ```
 
-Preview article headers:
-```bash
-grep "^#" "<article_path>"
-```
-
-Search for Kevin Naughton video on a topic:
+### Search Local Playlists
 ```bash
 grep -i "<keyword>" playlists/youtube_kevin_naughton_leetcode.jsonl
+grep -i "<keyword>" playlists/youtube_neetcode_blind75.jsonl
+grep -iE "<pattern>" playlists/*.jsonl  # Search all
 ```
 
 ## Workflow
@@ -53,7 +48,6 @@ When user says "study", "next video", or uses `/study`:
    ```bash
    ls neetcode/articles/ | grep -i "<keyword>"
    ```
-   Article names vary (e.g., "combination-sum" vs "combination-target-sum").
 3. Search for Kevin Naughton video on same topic:
    ```bash
    grep -i "<problem-name>" playlists/youtube_kevin_naughton_leetcode.jsonl
@@ -62,23 +56,39 @@ When user says "study", "next video", or uses `/study`:
 5. Open the article in kitty with glow (first, so it's behind)
 6. Open NeetCode video in VLC
 7. After NeetCode video, open Kevin Naughton video if available
-8. When user confirms they're done, run `python scripts/study.py mark <n>`
-9. Run `python scripts/progress_report.py` to show updated progress
+8. When done:
+   - Legacy: `python scripts/study.py mark <n>`
+   - Multi-source: `python scripts/track.py watch <source> <youtube_id> "<problem>"`
+9. Run `python scripts/progress_report.py` for Blind 75 progress
 
 ## Video Paths
 
 - NeetCode: `videos/neetcode-blind75/`
 - Kevin Naughton: `videos/kevin-naughton/`
 
+## Progress Files
+
+- `progress/watched.jsonl` - Blind 75 tracking (by playlist index)
+- `progress/watched_multi.jsonl` - Multi-source tracking (by youtube_id)
+- `study_queue.jsonl` - Bookmarked problems to study
+
 ## Example Session
 
+```
 User: "next video" / "study"
 -> Show video info
 -> Search for Kevin Naughton version
--> Open article in kitty with glow (behind)
+-> Open article in kitty (behind)
 -> Open NeetCode video in VLC
--> After watching, open Kevin's video for different perspective
+-> After watching, open Kevin's video
+
+User: "done with kevin frog jump"
+-> python scripts/track.py watch kevin 4LvYp_d6Ydg "Frog Jump"
 
 User: "done" / "mark watched"
 -> Mark video as watched
 -> Show progress report
+
+User: "show queue"
+-> python scripts/track.py queue
+```
