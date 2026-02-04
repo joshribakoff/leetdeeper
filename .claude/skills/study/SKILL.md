@@ -68,9 +68,23 @@ When user says "study", "next video", or uses `/study`:
 
 ## Progress Files
 
-- `progress/watched.jsonl` - Blind 75 tracking (by playlist index)
-- `progress/watched_multi.jsonl` - Multi-source tracking (by youtube_id)
+- `progress/watched_by_id.jsonl` - **Primary** - Deduplicated tracking by youtube_id (cross-playlist)
+- `progress/watched.jsonl` - Legacy Blind 75 tracking (by playlist index, kept for backwards compat)
 - `study_queue.jsonl` - Bookmarked problems to study
+
+## Marking Videos Watched
+
+When marking a video watched, add to BOTH files for backwards compatibility:
+
+```python
+# watched_by_id.jsonl (primary, deduplicated)
+{"youtube_id": "ABC123", "date": "2026-02-03", "source_playlist": "youtube_neetcode_blind75", "source_index": 34}
+
+# watched.jsonl (legacy)
+{"playlist": "youtube_neetcode_blind75", "index": 34, "date": "2026-02-03"}
+```
+
+The youtube_id can be found in the video filename: `034 - Title [ABC123].mp4` or from the playlist JSONL.
 
 ## Example Session
 

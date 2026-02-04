@@ -43,6 +43,11 @@ PLAYLISTS = {
         "url": "https://www.youtube.com/playlist?list=PLot-Xpze53ldVwtstag2TL4HQhAnC8ATf",
         "priority": 1,
     },
+    # Kevin Naughton - curated from channel (no playlist URL, uses pre-cached JSONL)
+    "kevin-naughton": {
+        "jsonl": "youtube_kevin_naughton_leetcode.jsonl",  # Pre-cached, no URL fetch needed
+        "priority": 20,  # Finish last - CS fundamentals more valuable
+    },
     "neetcode-dp": {
         "url": "https://www.youtube.com/playlist?list=PLot-Xpze53lcvx_tjrr_m2lgD2NsRHlNO",
         "priority": 2,
@@ -75,40 +80,40 @@ PLAYLISTS = {
         "url": "https://www.youtube.com/playlist?list=PLot-Xpze53leOBgcVsJBEGrHPd_7x_koV",
         "priority": 9,
     },
-    # MIT
+    # MIT - dense but solid (medium priority)
     "mit-6006-algorithms": {
         "url": "https://www.youtube.com/playlist?list=PLUl4u3cNGP61Oq3tWYp6V_F-5jb5L2iHb",
-        "priority": 10,
+        "priority": 8,
     },
-    # Abdul Bari
+    # Abdul Bari - deeper theory (lower priority)
     "abdul-bari-algorithms": {
         "url": "https://www.youtube.com/playlist?list=PLDN4rrl48XKpZkf03iYFl-O29szjTrs_O",
-        "priority": 11,
+        "priority": 9,
     },
-    # mycodeschool
-    "mycodeschool-interview-questions": {
-        "url": "https://www.youtube.com/playlist?list=PL2_aWCzGMAwLPEZrZIcNEq9ukGWPfLT4A",
-        "priority": 12,
-    },
+    # mycodeschool - approachable CS fundamentals (high priority)
     "mycodeschool-data-structures": {
         "url": "https://www.youtube.com/playlist?list=PL2_aWCzGMAwI3W_JlcBbtYTwiQSsOTa6P",
-        "priority": 13,
-    },
-    "mycodeschool-sorting": {
-        "url": "https://www.youtube.com/playlist?list=PL2_aWCzGMAwKedT2KfDMB9YA5DgASZb3U",
-        "priority": 14,
-    },
-    "mycodeschool-binary-search": {
-        "url": "https://www.youtube.com/playlist?list=PL2_aWCzGMAwL3ldWlrii6YeLszojgH77j",
-        "priority": 15,
+        "priority": 2,
     },
     "mycodeschool-time-complexity": {
         "url": "https://www.youtube.com/playlist?list=PL2_aWCzGMAwI9HK8YPVBjElbLbI3ufctn",
-        "priority": 16,
+        "priority": 3,
     },
     "mycodeschool-recursion": {
         "url": "https://www.youtube.com/playlist?list=PL2_aWCzGMAwLz3g66WrxFGSXvSsvyfzCO",
-        "priority": 17,
+        "priority": 4,
+    },
+    "mycodeschool-sorting": {
+        "url": "https://www.youtube.com/playlist?list=PL2_aWCzGMAwKedT2KfDMB9YA5DgASZb3U",
+        "priority": 5,
+    },
+    "mycodeschool-binary-search": {
+        "url": "https://www.youtube.com/playlist?list=PL2_aWCzGMAwL3ldWlrii6YeLszojgH77j",
+        "priority": 6,
+    },
+    "mycodeschool-interview-questions": {
+        "url": "https://www.youtube.com/playlist?list=PL2_aWCzGMAwLPEZrZIcNEq9ukGWPfLT4A",
+        "priority": 7,
     },
 }
 
@@ -210,29 +215,65 @@ def save_playlist_jsonl(name: str, entries: list):
     log(f"Saved {len(entries)} entries to {jsonl_path.name}")
 
 
+def load_cached_jsonl(name: str, config: dict) -> list | None:
+    """Load entries from cached JSONL if available."""
+    # Check for explicit jsonl config (curated playlists)
+    if "jsonl" in config:
+        jsonl_path = PLAYLISTS_DIR / config["jsonl"]
+    else:
+        jsonl_name = f"youtube_{name.replace('-', '_')}.jsonl"
+        jsonl_path = PLAYLISTS_DIR / jsonl_name
+
+    if jsonl_path.exists() and jsonl_path.stat().st_size > 0:
+        with open(jsonl_path) as f:
+            entries = []
+            for line in f:
+                if line.strip():
+                    entry = json.loads(line)
+                    # Normalize to yt-dlp format
+                    entries.append({
+                        "id": entry.get("youtube_id") or entry.get("id"),
+                        "title": entry.get("title", "Unknown"),
+                    })
+            if entries:
+                return entries
+    return None
+
+
 def download_playlist(name: str, config: dict, info_only: bool = False):
     """Download all videos from a playlist with rate limiting."""
-    url = config["url"]
     playlist_dir = VIDEOS_DIR / name
     playlist_dir.mkdir(parents=True, exist_ok=True)
     BY_ID_DIR.mkdir(parents=True, exist_ok=True)
 
-    log(f"Fetching info for {name}...")
-    info = get_playlist_info(url)
+    # Try cached JSONL first (idempotent - don't re-fetch if we have it)
+    entries = load_cached_jsonl(name, config)
 
-    if "error" in info:
-        log(f"Error fetching {name}: {info['error']}")
-        log_event({"type": "playlist_error", "name": name, "error": info["error"]})
+    if entries:
+        log(f"{name}: Using cached JSONL ({len(entries)} videos)")
+        log_event({"type": "playlist_cached", "name": name, "count": len(entries)})
+    elif "url" in config:
+        # Fetch from YouTube
+        log(f"Fetching info for {name}...")
+        info = get_playlist_info(config["url"])
+
+        if "error" in info:
+            log(f"Error fetching {name}: {info['error']}")
+            log_event({"type": "playlist_error", "name": name, "error": info["error"]})
+            return
+
+        entries = info.get("entries", [])
+        title = info.get("title", name)
+        log(f"{name}: {title} - {len(entries)} videos")
+        log_event({"type": "playlist_info", "name": name, "title": title, "count": len(entries)})
+
+        # Save playlist metadata to JSONL
+        save_playlist_jsonl(name, entries)
+    else:
+        log(f"{name}: No URL and no cached JSONL, skipping")
         return
 
-    entries = info.get("entries", [])
     total = len(entries)
-    title = info.get("title", name)
-    log(f"{name}: {title} - {total} videos")
-    log_event({"type": "playlist_info", "name": name, "title": title, "count": total})
-
-    # Save playlist metadata to JSONL
-    save_playlist_jsonl(name, entries)
 
     if info_only:
         return
