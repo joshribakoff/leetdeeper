@@ -25,8 +25,7 @@ neetcode/videos/
 # Generated output (ephemeral, regenerate with show_progress.py)
 PROGRESS.md
 
-# Personal progress (local tracking, not shared)
-/progress/
+# Legacy progress file
 watch_progress.jsonl
 
 # Download logs (generated)
