@@ -5,11 +5,18 @@ Shows videos watched vs problems completed by pattern with progress bars.
 """
 
 import json
+import sys
 from pathlib import Path
 from collections import defaultdict
 
 SCRIPT_DIR = Path(__file__).parent
 REPO_ROOT = SCRIPT_DIR.parent
+VIDEOS_DIR = REPO_ROOT / "videos"
+PLAYLISTS_DIR = REPO_ROOT / "playlists"
+
+# Import PLAYLISTS from download script
+sys.path.insert(0, str(SCRIPT_DIR))
+from download_playlists import PLAYLISTS
 
 
 def progress_bar(done: int, total: int, width: int = 10) -> str:
@@ -116,8 +123,87 @@ def find_gaps(videos_by_pattern, problems_by_pattern, patterns):
     return gaps
 
 
+def get_download_progress():
+    """Get download progress for all playlists from download script."""
+    results = []
+
+    for name, config in sorted(PLAYLISTS.items(), key=lambda x: x[1].get("priority", 99)):
+        # Get total from JSONL
+        if "jsonl" in config:
+            jsonl_path = PLAYLISTS_DIR / config["jsonl"]
+        else:
+            jsonl_name = f"youtube_{name.replace('-', '_')}.jsonl"
+            jsonl_path = PLAYLISTS_DIR / jsonl_name
+
+        total = 0
+        if jsonl_path.exists():
+            with open(jsonl_path) as f:
+                total = sum(1 for line in f if line.strip())
+
+        # Get downloaded count from videos folder
+        video_dir = VIDEOS_DIR / name
+        downloaded = 0
+        if video_dir.exists():
+            downloaded = len([f for f in video_dir.iterdir() if f.suffix in ('.mp4', '.mkv', '.webm')])
+
+        results.append({
+            "name": name,
+            "priority": config.get("priority", 99),
+            "downloaded": downloaded,
+            "total": total,
+        })
+
+    return results
+
+
+def print_download_progress():
+    """Print download progress for all playlists."""
+    print("=" * 78)
+    print("DOWNLOAD PROGRESS")
+    print("=" * 78)
+    print()
+    print(f"{'Playlist':<35} {'Progress':<30} {'Status'}")
+    print("-" * 78)
+
+    results = get_download_progress()
+    total_downloaded = 0
+    total_videos = 0
+
+    for r in results:
+        name = r["name"]
+        downloaded = r["downloaded"]
+        total = r["total"]
+
+        total_downloaded += downloaded
+        total_videos += total
+
+        if total == 0:
+            bar = "░" * 10
+            pct = 0
+            status = "no metadata"
+        else:
+            pct = int(100 * downloaded / total)
+            bar = progress_bar(downloaded, total, 10)
+            if downloaded >= total:
+                status = "✓"
+            elif downloaded == 0:
+                status = "queued"
+            else:
+                status = "in progress"
+
+        print(f"{name:<35} {bar} {pct:3}% ({downloaded}/{total:<3}) {status}")
+
+    print("-" * 78)
+    overall_pct = int(100 * total_downloaded / total_videos) if total_videos > 0 else 0
+    print(f"{'TOTAL':<35} {progress_bar(total_downloaded, total_videos, 10)} {overall_pct:3}% ({total_downloaded}/{total_videos})")
+    print()
+
+
 def generate_report():
     """Generate the full progress report."""
+    # Download progress first
+    print_download_progress()
+
     neetcode_data, completed, watched, playlist = load_data()
     patterns = get_pattern_order(neetcode_data)
     videos_by_pattern, problems_by_pattern, total_watched, total_completed = analyze_progress(

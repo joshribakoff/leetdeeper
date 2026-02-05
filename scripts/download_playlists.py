@@ -80,10 +80,10 @@ PLAYLISTS = {
         "url": "https://www.youtube.com/playlist?list=PLot-Xpze53leOBgcVsJBEGrHPd_7x_koV",
         "priority": 9,
     },
-    # MIT - dense but solid (medium priority)
+    # MIT - dense but solid (TOP PRIORITY)
     "mit-6006-algorithms": {
         "url": "https://www.youtube.com/playlist?list=PLUl4u3cNGP61Oq3tWYp6V_F-5jb5L2iHb",
-        "priority": 8,
+        "priority": 0,
     },
     # Abdul Bari - deeper theory (lower priority)
     "abdul-bari-algorithms": {

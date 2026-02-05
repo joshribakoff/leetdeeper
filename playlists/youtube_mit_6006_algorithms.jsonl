@@ -1,0 +1,47 @@
+{"index": 1, "title": "Lecture 1: Algorithmic Thinking, Peak Finding", "youtube_id": "HtSuA80QTyo"}
+{"index": 2, "title": "Lecture 2: Models of Computation, Document Distance", "youtube_id": "Zc54gFhdpLA"}
+{"index": 3, "title": "Lecture 3: Insertion Sort, Merge Sort", "youtube_id": "Kg4bqzAqRBM"}
+{"index": 4, "title": "Lecture 4: Heaps and Heap Sort", "youtube_id": "B7hVxCmfPtM"}
+{"index": 5, "title": "Lecture 5: Binary Search Trees, BST Sort", "youtube_id": "9Jry5-82I68"}
+{"index": 6, "title": "Lecture 6: AVL Trees, AVL Sort", "youtube_id": "FNeL18KsWPc"}
+{"index": 7, "title": "Lecture 7: Counting Sort, Radix Sort, Lower Bounds for Sorting", "youtube_id": "Nz1KZXbghj8"}
+{"index": 8, "title": "Lecture 8: Hashing with Chaining", "youtube_id": "0M_kIqhwbFo"}
+{"index": 9, "title": "Lecture 9: Table Doubling, Karp-Rabin", "youtube_id": "BRO7mVIFt08"}
+{"index": 10, "title": "Lecture 10: Open Addressing, Cryptographic Hashing", "youtube_id": "rvdJDijO2Ro"}
+{"index": 11, "title": "Lecture 11: Integer Arithmetic, Karatsuba Multiplication", "youtube_id": "eCaXlAaN2uE"}
+{"index": 12, "title": "Lecture 12: Square Roots, Newton's Method", "youtube_id": "2YeJ-5UAke8"}
+{"index": 13, "title": "Lecture 13: Breadth-First Search (BFS)", "youtube_id": "s-CYnVz-uh4"}
+{"index": 14, "title": "Lecture 14: Depth-First Search (DFS), Topological Sort", "youtube_id": "AfSk24UTFS8"}
+{"index": 15, "title": "Lecture 15: Single-Source Shortest Paths Problem", "youtube_id": "Aa2sqUhIn-E"}
+{"index": 16, "title": "Lecture 16: Dijkstra", "youtube_id": "2E7MmKv0Y24"}
+{"index": 17, "title": "Lecture 17: Bellman-Ford", "youtube_id": "ozsuci5pIso"}
+{"index": 18, "title": "Lecture 18: Speeding up Dijkstra", "youtube_id": "CHvQ3q_gJ7E"}
+{"index": 19, "title": "Lecture 19: Dynamic Programming I: Fibonacci, Shortest Paths", "youtube_id": "OQ5jsbhAv_M"}
+{"index": 20, "title": "Lecture 20: Dynamic Programming II: Text Justification, Blackjack", "youtube_id": "ENyox7kNKeY"}
+{"index": 21, "title": "Lecture 21: Dynamic Programming III: Parenthesization, Edit Distance, Knapsack", "youtube_id": "ocZMDMZwhCY"}
+{"index": 22, "title": "Lecture 22: Dynamic Programming IV: Guitar Fingering, Tetris, Super Mario Bros.", "youtube_id": "tp4_UXaVyx8"}
+{"index": 23, "title": "Lecture 23: Computational Complexity", "youtube_id": "moPtwq_cVH8"}
+{"index": 24, "title": "Lecture 24: Topics in Algorithms Research", "youtube_id": "dU40AvBURDQ"}
+{"index": 25, "title": "Recitation 1: Asymptotic Complexity, Peak Finding", "youtube_id": "P7frcB_-g4w"}
+{"index": 26, "title": "Recitation 2: Python Cost Model, Document Distance", "youtube_id": "QFcyt8fgQMU"}
+{"index": 27, "title": "Recitation 3: Document Distance, Insertion and Merge Sort", "youtube_id": "4iXLnF3hExw"}
+{"index": 28, "title": "Recitation 5: Recursion Trees, Binary Search Trees", "youtube_id": "r5pXu1PAUkI"}
+{"index": 29, "title": "Recitation 6: AVL Trees", "youtube_id": "IWzYoXKaRIc"}
+{"index": 30, "title": "Recitation 7: Comparison Sort, Counting and Radix Sort", "youtube_id": "9bkvws_vqLU"}
+{"index": 31, "title": "Recitation 8: Simulation Algorithms", "youtube_id": "eGSXsaJ-BlY"}
+{"index": 32, "title": "Recitation 9: Rolling Hashes, Amortized Analysis", "youtube_id": "w6nuXg0BISo"}
+{"index": 33, "title": "Recitation 9b: DNA Sequence Matching", "youtube_id": "-DwGrJ8JxDc"}
+{"index": 34, "title": "Recitation 10: Quiz 1 Review", "youtube_id": "-FElVPKykgw"}
+{"index": 35, "title": "Recitation 11: Principles of Algorithm Design", "youtube_id": "a_otxyu0mSQ"}
+{"index": 36, "title": "Recitation 12: Karatsuba Multiplication, Newton's Method", "youtube_id": "JRgIXyEPnbA"}
+{"index": 37, "title": "Recitation 13: Breadth-First Search (BFS)", "youtube_id": "5JxShDZ_ylo"}
+{"index": 38, "title": "Recitation 14: Depth-First Search (DFS)", "youtube_id": "C5SPsY72_CM"}
+{"index": 39, "title": "R15. Shortest Paths", "youtube_id": "mQSp6VmfakA"}
+{"index": 40, "title": "Recitation 16: Rubik's Cube, StarCraft Zero", "youtube_id": "oRpERQA4Vik"}
+{"index": 41, "title": "Recitation 18: Quiz 2 Review", "youtube_id": "sPuazUPiV1k"}
+{"index": 42, "title": "Recitation 19: Dynamic Programming: Crazy Eights, Shortest Path", "youtube_id": "IFrvgSvZA0I"}
+{"index": 43, "title": "Recitation 20: Dynamic Programming: Blackjack", "youtube_id": "jZbkToeNK2g"}
+{"index": 44, "title": "Recitation 22: Dynamic Programming: Dance Dance Revolution", "youtube_id": "PptQgy89cN8"}
+{"index": 45, "title": "Recitation 21: Dynamic Programming: Knapsack Problem", "youtube_id": "wFP5VHGHFdk"}
+{"index": 46, "title": "Recitation 23: Computational Complexity", "youtube_id": "t5Wxk96QjUk"}
+{"index": 47, "title": "Recitation 24: Final Exam Review", "youtube_id": "hkAONP0aC9w"}
