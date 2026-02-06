@@ -4,7 +4,7 @@
 
 **Deliberate algorithm practice for engineers who refuse to let AI make them dumber.**
 
-Can't get laid off if you've already downloaded the entire interview prep internet. 📼
+Can't get laid off if you've already downloaded the entire interview prep internet. 🎥
 
 ---
 
@@ -43,7 +43,7 @@ Sister project: **[joshribakoff/leetdreamer](https://github.com/joshribakoff/lee
 
 Finally understand an algorithm? Prove it before you forget. Write a JSON scene spec, get a narrated animation where a robot voice explains sliding window while color-coded boxes dance across the screen. Built with a modular pipeline (TTS, HTML animation, Playwright recording, FFmpeg merging) because obviously the correct response to "I understand two pointers now" is to build a video production pipeline. 🎥🤖
 
-## 📼 The Library
+## 🎥 The Library
 
 Why stream when you can hoard? 600+ videos across 5 sources, rate-limited downloads running in the background while you grind. YouTube's rate limiter vs my download script is the real algorithmic battle.
 
@@ -88,7 +88,7 @@ leetdeeper/
 ├── notes.md            # Hard-won algorithm intuitions
 ├── completed.json      # The scoreboard
 ├── scripts/            # Download automation, progress reports
-├── videos/             # Offline video library (doomsday prep 📼)
+├── videos/             # Offline video library (doomsday prep 🎥)
 ├── neetcode/           # NeetCode curriculum (submodule)
 ├── fucking-algorithm/  # Labuladong's algorithm book (the name says it all)
 └── leetcode-py/        # Python reference solutions (submodule)
@@ -117,4 +117,4 @@ My code is MIT. Submodules have their own licenses.
 
 *Also: if you don't use it, you lose it.* 🧠
 
-*Can't get laid off if you've already downloaded the entire interview prep internet.* 📼
+*Can't get laid off if you've already downloaded the entire interview prep internet.* 🎥
