@@ -1,18 +1,12 @@
 # LeetDeeper 🧠💀
 
-> Because apparently building production systems that serve millions of users isn't enough. You also need to reverse a linked list on a whiteboard while a stranger watches you sweat.
-
-**Deliberate algorithm practice for engineers who refuse to let AI make them dumber.**
-
-Can't get laid off if you've already downloaded the entire interview prep internet. 🎥
-
----
-
-## 🔥 What This Actually Is
-
 A full offline interview prep war room. 600+ videos from 5 sources, 4 curated problem lists, practice scaffolds in TypeScript, Python, Elixir, Go, Rust, whatever—LLMs are magic and languages are just syntax. Progress tracking, an AI study buddy that helps you learn without spoiling answers, and an absurdly over-engineered automation pipeline that would probably impress interviewers more than the actual LeetCode solutions.
 
+> Because apparently building production systems that serve millions of users isn't enough. You also need to reverse a linked list on a whiteboard while a stranger watches you sweat.
+
 **Incident report:** 75 Vitest worker threads × 8 CPU cores = 600 concurrent processes. Accidental fork bomb 💣🍴💥. Machine frozen. Lesson learned. `npx vitest run .` targets ONE problem. Never again.
+
+---
 
 ## 🎯 The Grind
 
