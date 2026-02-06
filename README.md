@@ -18,7 +18,7 @@ A full offline interview prep war room. 600+ videos from 5 sources, 4 curated pr
 
 ```
 1. 📺 Watch NeetCode explain it          (VLC, 2x speed, you're not a beginner)
-2. 📖 Skim the article simultaneously    (kitty terminal, because GPU-accelerated text is a flex)
+2. 📖 Skim the article simultaneously    (transparent kitty terminal over VLC — video behind, glow markdown in front)
 3. 🧠 Understand the PATTERN, not the code
 4. ⌨️  Implement it yourself              (TypeScript, Python, Elixir, whatever compiles your feelings)
 5. 📝 Record insights in notes.md         (the real treasure)
@@ -30,7 +30,7 @@ A full offline interview prep war room. 600+ videos from 5 sources, 4 curated pr
 | Tool | Why |
 |------|-----|
 | **NeoVim** | Because VS Code is for people who haven't been humbled by Vim yet |
-| **Kitty** | GPU-accelerated terminal. Even my text rendering is optimized. |
+| **Kitty** | GPU-accelerated terminal with transparency. Video plays behind, article renders on top via [glow](https://github.com/charmbracelet/glow) (a markdown renderer written in Go). Simultaneously watch and read. 👻 |
 | **Claude Code** | AI pair programmer that tracks progress, manages downloads, and once accidentally fork-bombed my laptop 💣 |
 | **[LeetDreamer](https://github.com/joshribakoff/leetdreamer)** | Sister project. Write JSON, get a video where a robot explains sliding window while boxes dance. |
 | **VLC** | 2x speed. No ads. Offline. Like YouTube but without the existential dread. |
