@@ -1,5 +1,19 @@
 // LeetCode 105: Construct Binary Tree from Preorder and Inorder Traversal
 
+/**
+ * Given two integer arrays preorder and inorder where preorder is the preorder
+ * traversal and inorder is the inorder traversal of the same tree, construct
+ * and return the binary tree.
+ *
+ * Example 1: preorder = [3,9,20,15,7], inorder = [9,3,15,20,7] -> [3,9,20,null,null,15,7]
+ * Example 2: preorder = [-1], inorder = [-1] -> [-1]
+ *
+ * Constraints:
+ * - preorder and inorder have the same length
+ * - All values are unique
+ * - Each value in inorder also appears in preorder
+ */
+
 export class TreeNode {
   val: number
   left: TreeNode | null

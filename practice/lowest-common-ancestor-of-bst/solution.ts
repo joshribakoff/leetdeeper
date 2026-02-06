@@ -1,4 +1,18 @@
 // LeetCode 235: Lowest Common Ancestor of a Binary Search Tree
+/**
+ * Given a binary search tree (BST), find the lowest common ancestor (LCA)
+ * of two given nodes p and q. The LCA is the lowest node that has both
+ * p and q as descendants (a node can be a descendant of itself).
+ *
+ * Example 1: root = [6,2,8,0,4,7,9,null,null,3,5], p = 2, q = 8 -> 6
+ * Example 2: root = [6,2,8,0,4,7,9,null,null,3,5], p = 2, q = 4 -> 2
+ * Example 3: root = [2,1], p = 2, q = 1 -> 2
+ *
+ * Constraints:
+ * - All node values are unique
+ * - p and q exist in the BST
+ * - p != q
+ */
 
 export class TreeNode {
   val: number

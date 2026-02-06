@@ -6,6 +6,7 @@
     {"number": 49, "slug": "group_anagrams", "title": "Group Anagrams", "difficulty": "Medium", "date": "2026-01-10"},
     {"number": 125, "slug": "valid_palindrome", "title": "Valid Palindrome", "difficulty": "Easy", "date": "2026-01-11"},
     {"number": 217, "slug": "contains_duplicate", "title": "Contains Duplicate", "difficulty": "Easy", "date": "2026-01-10"},
-    {"number": 242, "slug": "valid_anagram", "title": "Valid Anagram", "difficulty": "Easy", "date": "2026-01-10"}
+    {"number": 242, "slug": "valid_anagram", "title": "Valid Anagram", "difficulty": "Easy", "date": "2026-01-10"},
+    {"number": 3, "slug": "longest_substring_without_repeating_characters", "title": "Longest Substring Without Repeating Characters", "difficulty": "Medium", "date": "2026-02-05"}
   ]
 }

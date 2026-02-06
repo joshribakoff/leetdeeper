@@ -1,5 +1,18 @@
 // LeetCode 124: Binary Tree Maximum Path Sum
 
+/**
+ * Given the root of a binary tree, return the maximum path sum. A path is any
+ * sequence of nodes where each pair of adjacent nodes has an edge. The path
+ * does not need to pass through the root.
+ *
+ * Example 1: root = [1,2,3] -> 6 (path: 2 -> 1 -> 3)
+ * Example 2: root = [-10,9,20,null,null,15,7] -> 42 (path: 15 -> 20 -> 7)
+ *
+ * Constraints:
+ * - Node values can be negative
+ * - The path must contain at least one node
+ */
+
 export class TreeNode {
   val: number
   left: TreeNode | null

@@ -1,5 +1,14 @@
 // LeetCode 102: Binary Tree Level Order Traversal
 
+/**
+ * Given the root of a binary tree, return the level order traversal of its
+ * nodes' values (i.e., from left to right, level by level).
+ *
+ * Example 1: root = [3,9,20,null,null,15,7] -> [[3],[9,20],[15,7]]
+ * Example 2: root = [1] -> [[1]]
+ * Example 3: root = [] -> []
+ */
+
 export class TreeNode {
   val: number
   left: TreeNode | null

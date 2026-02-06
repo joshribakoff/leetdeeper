@@ -11,6 +11,15 @@ export class TreeNode {
   }
 }
 
+/**
+ * Given the root of a binary tree, determine if it is a valid binary
+ * search tree. A valid BST has left subtree values strictly less than
+ * the node and right subtree values strictly greater than the node.
+ *
+ * Example 1: [2,1,3] -> true
+ * Example 2: [5,1,4,null,null,3,6] -> false
+ * Example 3: [2,2,2] -> false (equal values not allowed)
+ */
 export function isValidBST(root: TreeNode | null): boolean {
   // TODO: implement
   return false

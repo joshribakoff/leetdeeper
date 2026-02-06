@@ -11,6 +11,15 @@ export class TreeNode {
   }
 }
 
+/**
+ * Design an algorithm to serialize and deserialize a binary tree.
+ * Serialization converts a tree to a string; deserialization reconstructs
+ * the tree from that string. The encoded string should be as compact as
+ * possible.
+ *
+ * Example 1: [1,2,3,null,null,4,5] -> serialize -> deserialize -> [1,2,3,null,null,4,5]
+ * Example 2: null -> serialize -> deserialize -> null
+ */
 export function serialize(root: TreeNode | null): string {
   // TODO: implement
   return ''

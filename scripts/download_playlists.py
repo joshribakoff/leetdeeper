@@ -46,7 +46,7 @@ PLAYLISTS = {
     # Kevin Naughton - curated from channel (no playlist URL, uses pre-cached JSONL)
     "kevin-naughton": {
         "jsonl": "youtube_kevin_naughton_leetcode.jsonl",  # Pre-cached, no URL fetch needed
-        "priority": 20,  # Finish last - CS fundamentals more valuable
+        "priority": 2,  # Prioritized for speedrun coverage
     },
     "neetcode-dp": {
         "url": "https://www.youtube.com/playlist?list=PLot-Xpze53lcvx_tjrr_m2lgD2NsRHlNO",
@@ -80,15 +80,15 @@ PLAYLISTS = {
         "url": "https://www.youtube.com/playlist?list=PLot-Xpze53leOBgcVsJBEGrHPd_7x_koV",
         "priority": 9,
     },
-    # MIT - dense but solid (TOP PRIORITY)
+    # MIT - dense CS theory (deprioritized)
     "mit-6006-algorithms": {
         "url": "https://www.youtube.com/playlist?list=PLUl4u3cNGP61Oq3tWYp6V_F-5jb5L2iHb",
-        "priority": 0,
+        "priority": 15,
     },
-    # Abdul Bari - deeper theory (lower priority)
+    # Abdul Bari - deeper theory
     "abdul-bari-algorithms": {
         "url": "https://www.youtube.com/playlist?list=PLDN4rrl48XKpZkf03iYFl-O29szjTrs_O",
-        "priority": 9,
+        "priority": 3,  # Prioritized for algorithm depth
     },
     # mycodeschool - approachable CS fundamentals (high priority)
     "mycodeschool-data-structures": {

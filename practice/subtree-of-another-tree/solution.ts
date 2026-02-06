@@ -11,6 +11,14 @@ export class TreeNode {
   }
 }
 
+/**
+ * Given the roots of two binary trees root and subRoot, return true if
+ * there is a subtree of root with the same structure and node values as
+ * subRoot.
+ *
+ * Example 1: root = [3,4,5,1,2], subRoot = [4,1,2] -> true
+ * Example 2: root = [3,4,5,1,2,null,null,null,null,0], subRoot = [4,1,2] -> false
+ */
 export function isSubtree(root: TreeNode | null, subRoot: TreeNode | null): boolean {
   // TODO: implement
   return false
