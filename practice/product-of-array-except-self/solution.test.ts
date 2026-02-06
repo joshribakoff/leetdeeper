@@ -6,5 +6,6 @@ test('example 1: [1,2,3,4]', () => {
 })
 
 test('example 2: [-1,1,0,-3,3]', () => {
-  expect(productExceptSelf([-1, 1, 0, -3, 3])).toEqual([0, 0, 9, 0, 0])
+  const result = productExceptSelf([-1, 1, 0, -3, 3])
+  expect(result.map(x => x === 0 ? 0 : x)).toEqual([0, 0, 9, 0, 0])
 })
