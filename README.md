@@ -6,6 +6,8 @@
 
 Can't get laid off if you've already downloaded the entire interview prep internet. 📼
 
+![Video playing behind transparent terminal with glow markdown overlay](screenshot.png)
+
 ---
 
 ## 🔥 What This Actually Is
