@@ -6,8 +6,6 @@
 
 Can't get laid off if you've already downloaded the entire interview prep internet. 📼
 
-![Video playing behind transparent terminal with glow markdown overlay](screenshot.png)
-
 ---
 
 ## 🔥 What This Actually Is
@@ -33,6 +31,8 @@ A full offline interview prep war room. 600+ videos from 5 sources, 4 curated pr
 |------|-----|
 | **NeoVim** | Because VS Code is for people who haven't been humbled by Vim yet |
 | **Kitty** | GPU-accelerated terminal with transparency. Video plays behind, article renders on top via [glow](https://github.com/charmbracelet/glow) (a markdown renderer written in Go). Simultaneously watch and read. 👻 |
+
+![Video playing behind transparent terminal with glow markdown overlay](screenshot.png)
 | **Claude Code** | AI pair programmer that tracks progress, manages downloads, and once accidentally fork-bombed my laptop 💣 |
 | **[LeetDreamer](https://github.com/joshribakoff/leetdreamer)** | Sister project. Write JSON, get a video where a robot explains sliding window while boxes dance. |
 | **VLC** | 2x speed. No ads. Offline. Like YouTube but without the existential dread. |
