@@ -76,3 +76,75 @@
   **Grid intuition**: Each cell answers "LCS of remaining substrings starting at i and j." Diagonal = happy path where chars align. Down/right = "try skipping one" branches. The zigzag through the grid is like zippering two pointers through the strings.
 
   **Space optimization**: Each row only depends on the previous row—don't need full history, just the last layer → O(min(n, m)) space.
+
+## Graphs
+
+- [ ] **Clone Graph** - Deep copy a graph with cycles.
+
+  **Core insight**: DFS would cycle (bidirectional links), so use a hashmap that serves double duty: break cycles AND store old→new node mapping. When revisiting a node, return the already-created clone.
+
+  **Key detail**: Store clone in map BEFORE recursing into neighbors, otherwise infinite loop when neighbor points back.
+
+- [ ] **Course Schedule** - Can you finish all courses given prerequisites? Cycle detection.
+
+  **Setup**: Build adjacency list `prereq_map[course] = [prerequisites]`. No single root—loop over every course, DFS each.
+
+  **Cycle detection**: Track current DFS path (not just global visited). Reaching a node twice via different paths is fine—only a cycle if same path.
+
+  **Optimization**: After verifying a course is acyclic, set `prereq_map[course] = []`. Future DFS calls return immediately—no re-traversal.
+
+## Intervals
+
+- [ ] **Insert Interval** - Insert new interval into sorted list, merging overlaps.
+
+  **Single loop with if/elif/else**:
+  ```
+  for each interval i:
+      if new.end < i.start       → new strictly BEFORE i (insert new, return rest)
+      elif new.start > i.end     → new strictly AFTER i (add i to result)
+      else                       → overlap (merge into new)
+  append new at end
+  ```
+
+  **Intuition**: Don't enumerate the six overlap cases. The else branch catches them by elimination—anything not strictly before and not strictly after must overlap.
+
+## Matrix
+
+- [ ] **Rotate Image** - Rotate matrix 90° clockwise in-place.
+
+  **4-way cycle swap** (NeetCode approach): Process entire edges, not individual corners. Each iteration of `i` grabs 4 cells in corresponding positions on all 4 edges and rotates them:
+
+  - Left col (bottom→top) fills Top row (left→right)
+  - Bottom row (right→left) fills Left col (bottom→top)
+  - Right col (top→bottom) fills Bottom row (right→left)
+  - Saved top row cell fills Right col (top→bottom)
+
+  The `i` offset walks along each edge simultaneously. `+i` when walking in positive direction (right/down), `-i` when walking negative (left/up). Outer loop shrinks the box inward one layer at a time.
+
+  **Simpler approach**: Transpose (swap across diagonal) + reverse each row. Two simple loops, easier to memorize and implement.
+
+  **NeetCode's framing pitfall**: He describes it as "move bottom-right to bottom-left" — individual cell transfers. But you're actually processing entire edges. Thinking edge-by-edge makes the `i` offset intuitive instead of mysterious.
+
+## Stack
+
+- [ ] **Valid Parentheses** - Match opening/closing brackets.
+
+  **Map direction matters**: Map `closing -> opening` (not vice versa). Push opening brackets onto the stack. When you encounter a closing bracket, look it up in the map to get its matching opening bracket, then check if that matches the top of the stack. If not, the brackets are mismatched.
+
+  **Why this direction?** You're always asking "does this closing bracket match what I'm expecting?" The stack holds what you're expecting (opening brackets in encounter order), the map translates what you're seeing (closing brackets) into what you should expect.
+
+## Greedy
+
+- [ ] **Jump Game** - Can you reach the last index? Each position has a max jump length.
+
+  **Why not backtracking?** Problem asks "is it possible?" not "what's the path?" Don't need to track which jumps you take—just what's reachable.
+
+  **Greedy insight**: Visit every index left to right. Track `max_reachable` = max reachable position. At each index, update max_reachable = max(max_reachable, i + nums[i]).
+
+  **Key observations**:
+  - Don't actually "jump"—just update state tracking the frontier
+  - Zeros don't extend reach, but if we've already calculated we can jump past, keep going
+  - Interim positions might extend reach further than earlier ones
+  - **Failure case**: if we reach an index beyond our max_reachable, there's a gap we can't cross
+
+  **Complexity**: O(n) single pass vs O(n²) DP. Greedy works here because we only care about possibility, not the path.
