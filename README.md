@@ -11,8 +11,8 @@ A full offline interview prep war room. 600+ videos from 5 sources, 4 curated pr
 ## 🎯 The Grind
 
 ```
-1. 📺 Watch NeetCode explain it          (VLC, 2x speed, you're not a beginner)
-2. 📖 Skim the article simultaneously    (transparent kitty terminal over VLC — video behind, glow markdown in front)
+1. 📺 Watch NeetCode explain it          (mpv, 2x speed, you're not a beginner)
+2. 📖 Skim the article simultaneously    (transparent kitty terminal over mpv — video behind, glow markdown in front)
 3. 🧠 Understand the PATTERN, not the code
 4. ⌨️  Implement it yourself              (TypeScript, Python, Elixir, whatever compiles your feelings)
 5. 📝 Record insights in notes.md         (the real treasure)
@@ -29,7 +29,7 @@ A full offline interview prep war room. 600+ videos from 5 sources, 4 curated pr
 ![Video playing behind transparent terminal with glow markdown overlay](screenshot.png)
 | **Claude Code** | AI pair programmer that tracks progress, manages downloads, and once accidentally fork-bombed my laptop 💣 |
 | **[LeetDreamer](https://github.com/joshribakoff/leetdreamer)** | Sister project. Write JSON, get a video where a robot explains sliding window while boxes dance. |
-| **VLC** | 2x speed. No ads. Offline. Like YouTube but without the existential dread. |
+| **mpv** | Minimal video player. 2x speed, clean seeking, no glitches. `]` to speed up, `[` to slow down. |
 
 ## 🎬 LeetDreamer
 

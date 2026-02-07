@@ -30,7 +30,7 @@ python scripts/track.py queue done "<problem>"
 **IMPORTANT: Always use FULL ABSOLUTE PATHS for glow and kitty. Do NOT omit the path — the command will silently fail.**
 
 ```bash
-open -a VLC "<video_path>"
+open -a mpv "<video_path>"
 /Applications/kitty.app/Contents/MacOS/kitty --single-instance -e bash -c '~/go/bin/glow -p "<article_path>"' &
 grep "^#" "<article_path>"  # Preview headers
 ```
@@ -64,7 +64,7 @@ When user says "study", "next video", or uses `/study`:
    ```
 4. Preview article headers with `grep "^#" <article_path>`
 5. Open the article in kitty with glow (first, so it's behind)
-6. Open NeetCode video in VLC
+6. Open NeetCode video in mpv
 7. After NeetCode video, open Kevin Naughton video if available
 8. When done:
    - Legacy: `python scripts/study.py mark <n>`
@@ -103,7 +103,7 @@ User: "next video" / "study"
 -> Show video info
 -> Search for Kevin Naughton version
 -> Open article in kitty (behind)
--> Open NeetCode video in VLC
+-> Open NeetCode video in mpv
 -> After watching, open Kevin's video
 
 User: "done with kevin frog jump"

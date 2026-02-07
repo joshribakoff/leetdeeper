@@ -53,11 +53,11 @@ def api_playlist(name):
 
 @app.route("/api/play/<youtube_id>", methods=["POST"])
 def api_play(youtube_id):
-    """Open a video in VLC."""
+    """Open a video in mpv."""
     video = VIDEOS_DIR / f"{youtube_id}.mp4"
     if not video.exists():
         return jsonify({"error": "video not found"}), 404
-    subprocess.Popen(["open", "-a", "VLC", str(video)])
+    subprocess.Popen(["open", "-a", "mpv", str(video)])
     return jsonify({"ok": True})
 
 
