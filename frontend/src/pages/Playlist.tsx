@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useQueryClient } from '@tanstack/react-query'
 import { useApi } from '../hooks/useApi'
+import { useMutationAction } from '../hooks/useMutationAction'
 import { Loading, ErrorMsg } from '../components/Status'
 import ProgressBar from '../components/ProgressBar'
 import type { PlaylistData, Video } from '../types'
@@ -24,8 +25,23 @@ export default function Playlist() {
   const { data, isLoading, error } = useApi<PlaylistData>(`playlist-${name}`, `/api/playlists/${name}`)
 
   const [activeId, setActiveId] = useState<string | null>(null)
-  const [articleLoading, setArticleLoading] = useState<string | null>(null)
-  const [articleError, setArticleError] = useState<string | null>(null)
+
+  const watchMutation = useMutationAction<Video>(
+    (v) => fetch(`/api/watch/${v.youtube_id}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ playlist: name, index: v.index, title: v.title }),
+    }),
+    { invalidate: [`playlist-${name}`] },
+  )
+
+  const playMutation = useMutationAction<string>(
+    (id) => fetch(`/api/play/${id}`, { method: 'POST' }),
+  )
+
+  const articleMutation = useMutationAction<string>(
+    (slug) => fetch(`/api/articles/${slug}`, { method: 'POST' }),
+  )
 
   useEffect(() => {
     const es = new EventSource('/api/progress/stream')
@@ -36,14 +52,6 @@ export default function Playlist() {
   if (isLoading) return <Loading />
   if (error) return <ErrorMsg error={error} />
 
-  // TODO: refactor to useMutation for loading/error states
-  function toggleWatch(v: Video) {
-    fetch(`/api/watch/${v.youtube_id}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ playlist: name, index: v.index, title: v.title }),
-    }).then(() => qc.invalidateQueries({ queryKey: [`playlist-${name}`] }))
-  }
   const downloaded = data!.videos.filter(v => v.has_video).length
   const totalDuration = formatTotalDuration(data!.videos)
 
@@ -68,7 +76,7 @@ export default function Playlist() {
               <span className="video-idx">{v.index}</span>
               <button
                 className={`video-check ${v.watched ? 'video-check--yes' : 'video-check--no'}`}
-                onClick={() => toggleWatch(v)}
+                onClick={() => watchMutation.mutate(v)}
                 title={v.watched ? 'Mark unwatched' : 'Mark watched'}
               >
                 {v.watched ? '\u2713' : '\u25CB'}
@@ -88,26 +96,17 @@ export default function Playlist() {
               <button
                 className="btn-play"
                 disabled={!v.has_video}
-                // TODO: refactor to useMutation
-                onClick={() => { setActiveId(v.youtube_id); fetch(`/api/play/${v.youtube_id}`, { method: 'POST' }) }}
+                onClick={() => { setActiveId(v.youtube_id); playMutation.mutate(v.youtube_id) }}
               >
                 {v.has_video ? '▶ play' : '▶ local'}
               </button>
               {v.article && (
                 <button
-                  className={`btn-article${articleError === v.article ? ' btn-article--error' : ''}`}
-                  disabled={articleLoading === v.article}
-                  // TODO: refactor to useMutation (remove manual loading/error state)
-                  onClick={() => {
-                    setArticleLoading(v.article!)
-                    setArticleError(null)
-                    fetch(`/api/articles/${v.article}`, { method: 'POST' })
-                      .then(r => { if (!r.ok) throw new Error('failed') })
-                      .catch(() => setArticleError(v.article!))
-                      .finally(() => setArticleLoading(null))
-                  }}
+                  className={`btn-article${articleMutation.isError && articleMutation.variables === v.article ? ' btn-article--error' : ''}`}
+                  disabled={articleMutation.isPending && articleMutation.variables === v.article}
+                  onClick={() => articleMutation.mutate(v.article!)}
                 >
-                  {articleLoading === v.article ? '...' : 'article'}
+                  {articleMutation.isPending && articleMutation.variables === v.article ? '...' : 'article'}
                 </button>
               )}
               <a className="external" href={`https://youtube.com/watch?v=${v.youtube_id}`} target="_blank" rel="noreferrer">

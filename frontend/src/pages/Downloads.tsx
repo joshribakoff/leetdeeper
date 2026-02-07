@@ -1,6 +1,7 @@
 import { useMemo, useState, useEffect, useRef } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import { useApi } from '../hooks/useApi'
+import { useMutationAction } from '../hooks/useMutationAction'
 import { Loading, ErrorMsg } from '../components/Status'
 import ProgressBar from '../components/ProgressBar'
 import SortableTable from '../components/SortableTable'
@@ -236,6 +237,15 @@ export default function Downloads() {
     },
   ], [])
 
+  const configMutation = useMutationAction<{ mode: string }>(
+    (body) => fetch('/api/downloads/config', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    }),
+    { invalidate: ['downloads'] },
+  )
+
   if (isLoading) return <Loading />
   if (error) return <ErrorMsg error={error} />
 
@@ -247,14 +257,9 @@ export default function Downloads() {
   const totalDl = data!.playlists.reduce((s, p) => s + p.downloaded, 0)
   const activity = data!.activity || {}
 
-  // TODO: refactor to useMutation
   const toggleMode = () => {
     const next = data!.config.mode === 'priority' ? 'round-robin' : 'priority'
-    fetch('/api/downloads/config', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ mode: next }),
-    }).then(() => queryClient.invalidateQueries({ queryKey: ['downloads'] }))
+    configMutation.mutate({ mode: next })
   }
 
   return (
