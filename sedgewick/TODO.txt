@@ -1,0 +1,18 @@
+Scrape algs4.cs.princeton.edu to markdown for offline glow reading.
+
+Chapters to scrape:
+  https://algs4.cs.princeton.edu/10fundamentals/
+  https://algs4.cs.princeton.edu/20sorting/
+  https://algs4.cs.princeton.edu/30searching/
+  https://algs4.cs.princeton.edu/40graphs/
+  https://algs4.cs.princeton.edu/50strings/
+  https://algs4.cs.princeton.edu/60context/
+
+Each chapter has subsections (e.g. /11model/, /12oop/, etc.)
+
+Open questions:
+  - Storage: images/diagrams could be large. Download or link?
+  - Format: pure markdown with image links, or self-contained with local images?
+  - Scope: full prose + code, or just the algorithm explanations?
+
+For now, the site is freely available online. Scrape when ready.
