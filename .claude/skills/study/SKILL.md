@@ -31,7 +31,7 @@ python scripts/track.py queue done "<problem>"
 
 ```bash
 open -a VLC "<video_path>"
-/Applications/kitty.app/Contents/MacOS/kitty --single-instance -e bash -c '~/go/bin/glow -p "<article_path>"; exec bash' &
+/Applications/kitty.app/Contents/MacOS/kitty --single-instance -e bash -c '~/go/bin/glow -p "<article_path>"' &
 grep "^#" "<article_path>"  # Preview headers
 ```
 
