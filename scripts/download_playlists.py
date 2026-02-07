@@ -152,6 +152,26 @@ def video_exists_by_id(youtube_id: str) -> bool:
     return (BY_ID_DIR / f"{youtube_id}.mp4").exists()
 
 
+def thumbnail_exists_by_id(youtube_id: str) -> bool:
+    """Check if thumbnail exists in by-id folder."""
+    return (BY_ID_DIR / f"{youtube_id}.jpg").exists()
+
+
+def download_thumbnail(youtube_id: str) -> bool:
+    """Download YouTube thumbnail to by-id folder. Returns success."""
+    if thumbnail_exists_by_id(youtube_id):
+        return True
+    BY_ID_DIR.mkdir(parents=True, exist_ok=True)
+    thumb_path = BY_ID_DIR / f"{youtube_id}.jpg"
+    url = f"https://img.youtube.com/vi/{youtube_id}/mqdefault.jpg"
+    try:
+        import urllib.request
+        urllib.request.urlretrieve(url, str(thumb_path))
+        return thumb_path.exists()
+    except Exception:
+        return False
+
+
 def create_symlink(youtube_id: str, playlist_dir: Path, index: int, title: str):
     """Create human-readable symlink in playlist folder."""
     filename = f"{index:03d} - {title} [{youtube_id}].mp4"
@@ -294,6 +314,7 @@ def download_playlist(name: str, config: dict, info_only: bool = False):
         if video_exists_by_id(youtube_id):
             # Just create symlink if missing
             create_symlink(youtube_id, playlist_dir, i, video_title)
+            download_thumbnail(youtube_id)
             skipped += 1
             continue
 
@@ -302,6 +323,7 @@ def download_playlist(name: str, config: dict, info_only: bool = False):
 
         if success:
             create_symlink(youtube_id, playlist_dir, i, video_title)
+            download_thumbnail(youtube_id)
             downloaded += 1
             log_event({"type": "video_downloaded", "playlist": name, "index": i, "youtube_id": youtube_id})
         elif rate_limited:
