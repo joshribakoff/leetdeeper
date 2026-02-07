@@ -13,15 +13,10 @@ export default function Home() {
 
   if (!summary) return <p className="loading">Loading...</p>
 
-  const playlists = [...summary.playlists].sort((a, b) => {
-    const aPct = a.total ? a.watched / a.total : 0
-    const bPct = b.total ? b.watched / b.total : 0
-    return bPct !== aPct ? bPct - aPct : a.name.localeCompare(b.name)
-  })
-
   return (
     <>
       <header>
+        <h1>Dashboard</h1>
         <p className="subtitle">
           {summary.total_videos_watched} videos watched &middot; {summary.total_problems_solved} problems solved
         </p>
@@ -29,30 +24,40 @@ export default function Home() {
 
       {patterns?.totals && (
         <section>
-          <Link to="/patterns" className="card card--featured">
-            <div className="card-header">
-              <span className="card-title">Blind 75 by Pattern</span>
-              <span className="card-stat">
-                {patterns.totals.videos_watched}/{patterns.totals.videos_total} videos &middot; {patterns.totals.problems_completed}/{patterns.totals.problems_total} problems
-              </span>
+          <h2>Blind 75</h2>
+          <div className="stat-row">
+            <div className="stat-card">
+              <span className="stat-value">{patterns.totals.videos_watched}/{patterns.totals.videos_total}</span>
+              <span className="stat-label">watched</span>
+              <ProgressBar value={patterns.totals.videos_watched} max={patterns.totals.videos_total} />
             </div>
-            <ProgressBar value={patterns.totals.videos_watched} max={patterns.totals.videos_total} />
-          </Link>
+            <div className="stat-card">
+              <span className="stat-value">{patterns.totals.problems_completed}/{patterns.totals.problems_total}</span>
+              <span className="stat-label">solved</span>
+              <ProgressBar value={patterns.totals.problems_completed} max={patterns.totals.problems_total} />
+            </div>
+          </div>
         </section>
       )}
 
       <section>
-        <h2>Playlists</h2>
+        <h2>Top Playlists</h2>
         <nav>
-          {playlists.map(pl => (
-            <Link to={`/playlist/${pl.name}`} key={pl.name} className="card">
-              <div className="card-header">
-                <span className="card-title">{pl.label}</span>
-                <span className="card-stat">{pl.watched}/{pl.total} watched</span>
-              </div>
-              <ProgressBar value={pl.watched} max={pl.total} />
-            </Link>
-          ))}
+          {[...summary.playlists]
+            .sort((a, b) => (b.total ? b.watched / b.total : 0) - (a.total ? a.watched / a.total : 0))
+            .slice(0, 5)
+            .map(pl => (
+              <Link to={`/playlist/${pl.name}`} key={pl.name} className="card">
+                <div className="card-header">
+                  <span className="card-title">{pl.label}</span>
+                  <span className="card-stat">{pl.watched}/{pl.total} watched</span>
+                </div>
+                <ProgressBar value={pl.watched} max={pl.total} />
+              </Link>
+            ))}
+          <Link to="/playlists" className="card card--muted">
+            <span className="card-title">View all playlists &rarr;</span>
+          </Link>
         </nav>
       </section>
     </>

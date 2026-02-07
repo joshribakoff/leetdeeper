@@ -1,5 +1,6 @@
 import { Routes, Route, NavLink } from 'react-router-dom'
 import Home from './pages/Home'
+import Playlists from './pages/Playlists'
 import Playlist from './pages/Playlist'
 import Patterns from './pages/Patterns'
 
@@ -10,7 +11,7 @@ export default function App() {
         <div className="topnav-inner">
           <NavLink to="/" className="topnav-brand" end>LeetDeeper</NavLink>
           <div className="topnav-links">
-            <NavLink to="/" end>Playlists</NavLink>
+            <NavLink to="/playlists">Playlists</NavLink>
             <NavLink to="/patterns">Patterns</NavLink>
           </div>
         </div>
@@ -18,6 +19,7 @@ export default function App() {
       <main className="container">
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/playlists" element={<Playlists />} />
           <Route path="/patterns" element={<Patterns />} />
           <Route path="/playlist/:name" element={<Playlist />} />
         </Routes>
