@@ -1,4 +1,6 @@
-const CREATORS = {
+import type { Creator } from '../types'
+
+const CREATORS: Record<string, Creator> = {
   neetcode:    { label: 'NeetCode',    color: '#818cf8', bg: 'rgba(129,140,248,0.12)' },
   kevin:       { label: 'Kevin N.',    color: '#f59e0b', bg: 'rgba(245,158,11,0.12)' },
   mycodeschool:{ label: 'mycodeschool',color: '#38bdf8', bg: 'rgba(56,189,248,0.12)' },
@@ -6,8 +8,8 @@ const CREATORS = {
   abdul:       { label: 'Abdul Bari',  color: '#fb7185', bg: 'rgba(251,113,133,0.12)' },
 }
 
-export function getCreator(playlistName) {
-  const n = playlistName.toLowerCase()
+export function getCreator(playlistName: string): Creator {
+  const n = playlistName.toLowerCase().replace(/^youtube_/, '')
   if (n.startsWith('neetcode')) return CREATORS.neetcode
   if (n.includes('kevin')) return CREATORS.kevin
   if (n.startsWith('mycodeschool')) return CREATORS.mycodeschool
@@ -16,8 +18,8 @@ export function getCreator(playlistName) {
   return { label: 'Other', color: '#71717a', bg: 'rgba(113,113,122,0.12)' }
 }
 
-export function getCreatorKey(playlistName) {
-  const n = playlistName.toLowerCase()
+export function getCreatorKey(playlistName: string): string {
+  const n = playlistName.toLowerCase().replace(/^youtube_/, '')
   if (n.startsWith('neetcode')) return 'neetcode'
   if (n.includes('kevin')) return 'kevin'
   if (n.startsWith('mycodeschool')) return 'mycodeschool'

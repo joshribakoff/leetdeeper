@@ -3,11 +3,13 @@ import { useApi } from '../hooks/useApi'
 import { Loading, ErrorMsg } from '../components/Status'
 import ProgressBar from '../components/ProgressBar'
 import SortableTable from '../components/SortableTable'
+import type { PatternsData, PatternRow } from '../types'
+import type { ColumnDef } from '@tanstack/react-table'
 
 export default function Patterns() {
-  const { data, isLoading, error } = useApi('patterns', '/api/patterns')
+  const { data, isLoading, error } = useApi<PatternsData>('patterns', '/api/patterns')
 
-  const columns = useMemo(() => [
+  const columns = useMemo<ColumnDef<PatternRow, any>[]>(() => [
     {
       accessorKey: 'name',
       header: 'Pattern',
@@ -56,15 +58,15 @@ export default function Patterns() {
       <header>
         <h1>Blind 75 by Pattern</h1>
         <div className="meta">
-          <span>{data.totals.videos_watched}/{data.totals.videos_total} watched</span>
-          <span>{data.totals.problems_completed}/{data.totals.problems_total} solved</span>
+          <span>{data!.totals.videos_watched}/{data!.totals.videos_total} watched</span>
+          <span>{data!.totals.problems_completed}/{data!.totals.problems_total} solved</span>
         </div>
-        <ProgressBar value={data.totals.videos_watched} max={data.totals.videos_total} />
+        <ProgressBar value={data!.totals.videos_watched} max={data!.totals.videos_total} />
       </header>
 
       <section>
         <SortableTable
-          data={data.patterns}
+          data={data!.patterns}
           columns={columns}
           initialSort={[{ id: 'name', desc: false }]}
         />

@@ -1,9 +1,14 @@
 import { allCreators } from '../lib/creators'
 
-export default function CreatorFilter({ active, onChange }) {
+interface Props {
+  active: string | null
+  onChange: (key: string | null) => void
+}
+
+export default function CreatorFilter({ active, onChange }: Props) {
   const creators = allCreators()
 
-  const toggle = (key) => {
+  const toggle = (key: string) => {
     if (active === key) onChange(null)
     else onChange(key)
   }

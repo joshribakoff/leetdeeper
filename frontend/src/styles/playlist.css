@@ -34,5 +34,7 @@ a.external:hover { color: var(--accent); }
 
 .btn-article { background: none; border: none; color: var(--dim); font: inherit; font-size: 0.8rem; cursor: pointer; padding: 0; transition: color 0.15s; }
 .btn-article:hover { color: var(--green); }
+.btn-article:disabled { opacity: 0.5; cursor: default; }
+.btn-article--error { color: var(--red, #f87171); }
 
 .meta-download { color: var(--accent); }

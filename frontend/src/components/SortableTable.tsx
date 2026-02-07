@@ -4,10 +4,18 @@ import {
   getCoreRowModel,
   getSortedRowModel,
   flexRender,
+  ColumnDef,
+  SortingState,
 } from '@tanstack/react-table'
 
-export default function SortableTable({ data, columns, initialSort = [] }) {
-  const [sorting, setSorting] = useState(initialSort)
+interface Props<T> {
+  data: T[]
+  columns: ColumnDef<T, any>[]
+  initialSort?: SortingState
+}
+
+export default function SortableTable<T>({ data, columns, initialSort = [] }: Props<T>) {
+  const [sorting, setSorting] = useState<SortingState>(initialSort)
 
   const table = useReactTable({
     data,
@@ -26,12 +34,12 @@ export default function SortableTable({ data, columns, initialSort = [] }) {
             {hg.headers.map(h => (
               <th
                 key={h.id}
-                className={h.column.columnDef.meta?.className}
+                className={(h.column.columnDef.meta as any)?.className}
                 onClick={h.column.getToggleSortingHandler()}
                 style={h.column.getCanSort() ? { cursor: 'pointer', userSelect: 'none' } : undefined}
               >
                 {flexRender(h.column.columnDef.header, h.getContext())}
-                {{ asc: ' ▲', desc: ' ▼' }[h.column.getIsSorted()] ?? ''}
+                {{ asc: ' ▲', desc: ' ▼' }[h.column.getIsSorted() as string] ?? ''}
               </th>
             ))}
           </tr>
@@ -41,7 +49,7 @@ export default function SortableTable({ data, columns, initialSort = [] }) {
         {table.getRowModel().rows.map(row => (
           <tr key={row.id}>
             {row.getVisibleCells().map(cell => (
-              <td key={cell.id} className={cell.column.columnDef.meta?.cellClassName}>
+              <td key={cell.id} className={(cell.column.columnDef.meta as any)?.cellClassName}>
                 {flexRender(cell.column.columnDef.cell, cell.getContext())}
               </td>
             ))}

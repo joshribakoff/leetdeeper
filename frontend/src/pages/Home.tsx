@@ -2,10 +2,11 @@ import { Link } from 'react-router-dom'
 import { useApi } from '../hooks/useApi'
 import { Loading, ErrorMsg } from '../components/Status'
 import ProgressBar from '../components/ProgressBar'
+import type { Summary, PatternsData } from '../types'
 
 export default function Home() {
-  const { data: summary, isLoading, error } = useApi('summary', '/api/summary')
-  const { data: patterns } = useApi('patterns', '/api/patterns')
+  const { data: summary, isLoading, error } = useApi<Summary>('summary', '/api/summary')
+  const { data: patterns } = useApi<PatternsData>('patterns', '/api/patterns')
 
   if (isLoading) return <Loading />
   if (error) return <ErrorMsg error={error} />
@@ -15,7 +16,7 @@ export default function Home() {
       <header>
         <h1>Dashboard</h1>
         <p className="subtitle">
-          {summary.total_videos_watched} videos watched &middot; {summary.total_problems_solved} problems solved
+          {summary!.total_videos_watched} videos watched &middot; {summary!.total_problems_solved} problems solved
         </p>
       </header>
 
@@ -40,7 +41,7 @@ export default function Home() {
       <section>
         <h2>Top Playlists</h2>
         <nav>
-          {[...summary.playlists]
+          {[...summary!.playlists]
             .sort((a, b) => (b.total ? b.watched / b.total : 0) - (a.total ? a.watched / a.total : 0))
             .slice(0, 5)
             .map(pl => (

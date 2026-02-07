@@ -7,12 +7,15 @@ import SortableTable from '../components/SortableTable'
 import CreatorBadge from '../components/CreatorBadge'
 import CreatorFilter from '../components/CreatorFilter'
 import { getCreatorKey } from '../lib/creators'
+import type { Summary, PlaylistSummary } from '../types'
+import type { ColumnDef } from '@tanstack/react-table'
 
 export default function Playlists() {
-  const { data, isLoading, error } = useApi('summary', '/api/summary')
-  const [creatorFilter, setCreatorFilter] = useState(null)
+  const { data, isLoading, error } = useApi<Summary>('summary', '/api/summary')
+  const { data: pinned } = useApi<string[]>('pinned', '/api/pinned')
+  const [creatorFilter, setCreatorFilter] = useState<string | null>(null)
 
-  const columns = useMemo(() => [
+  const columns = useMemo<ColumnDef<PlaylistSummary, any>[]>(() => [
     {
       accessorKey: 'label',
       header: 'Playlist',
@@ -51,16 +54,37 @@ export default function Playlists() {
   if (isLoading) return <Loading />
   if (error) return <ErrorMsg error={error} />
 
+  const pinnedPlaylists = pinned?.length
+    ? data!.playlists.filter(p => pinned.includes(p.name))
+    : []
+
   const filtered = creatorFilter
-    ? data.playlists.filter(p => getCreatorKey(p.name) === creatorFilter)
-    : data.playlists
+    ? data!.playlists.filter(p => getCreatorKey(p.name) === creatorFilter)
+    : data!.playlists
 
   return (
     <>
       <header>
         <h1>Playlists</h1>
-        <p className="subtitle">{data.total_videos_watched} videos watched across {data.playlists.length} playlists</p>
+        <p className="subtitle">{data!.total_videos_watched} videos watched across {data!.playlists.length} playlists</p>
       </header>
+
+      {pinnedPlaylists.length > 0 && (
+        <section>
+          <h2>Featured</h2>
+          <nav>
+            {pinnedPlaylists.map(pl => (
+              <Link to={`/playlist/${pl.name}`} key={pl.name} className="card">
+                <div className="card-header">
+                  <span className="card-title">{pl.label}</span>
+                  <span className="card-stat">{pl.watched}/{pl.total} watched</span>
+                </div>
+                <ProgressBar value={pl.watched} max={pl.total} />
+              </Link>
+            ))}
+          </nav>
+        </section>
+      )}
 
       <section>
         <CreatorFilter active={creatorFilter} onChange={setCreatorFilter} />

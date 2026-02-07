@@ -4,12 +4,13 @@ import { useQueryClient } from '@tanstack/react-query'
 import { useApi } from '../hooks/useApi'
 import { Loading, ErrorMsg } from '../components/Status'
 import ProgressBar from '../components/ProgressBar'
+import type { PlaylistData, Video } from '../types'
 
-function formatLabel(name) {
+function formatLabel(name: string) {
   return name.replace('youtube_', '').replaceAll('_', ' ').replace(/\b\w/g, c => c.toUpperCase())
 }
 
-function formatTotalDuration(videos) {
+function formatTotalDuration(videos: Video[]) {
   const totalSec = videos.reduce((sum, v) => sum + (v.duration || 0), 0)
   if (!totalSec) return null
   const h = Math.floor(totalSec / 3600)
@@ -18,9 +19,13 @@ function formatTotalDuration(videos) {
 }
 
 export default function Playlist() {
-  const { name } = useParams()
+  const { name } = useParams<{ name: string }>()
   const qc = useQueryClient()
-  const { data, isLoading, error } = useApi(`playlist-${name}`, `/api/playlists/${name}`)
+  const { data, isLoading, error } = useApi<PlaylistData>(`playlist-${name}`, `/api/playlists/${name}`)
+
+  const [activeId, setActiveId] = useState<string | null>(null)
+  const [articleLoading, setArticleLoading] = useState<string | null>(null)
+  const [articleError, setArticleError] = useState<string | null>(null)
 
   useEffect(() => {
     const es = new EventSource('/api/progress/stream')
@@ -31,35 +36,34 @@ export default function Playlist() {
   if (isLoading) return <Loading />
   if (error) return <ErrorMsg error={error} />
 
-  function toggleWatch(v) {
+  // TODO: refactor to useMutation for loading/error states
+  function toggleWatch(v: Video) {
     fetch(`/api/watch/${v.youtube_id}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ playlist: name, index: v.index, title: v.title }),
     }).then(() => qc.invalidateQueries({ queryKey: [`playlist-${name}`] }))
   }
-
-  const [activeId, setActiveId] = useState(null)
-  const downloaded = data.videos.filter(v => v.has_video).length
-  const totalDuration = formatTotalDuration(data.videos)
+  const downloaded = data!.videos.filter(v => v.has_video).length
+  const totalDuration = formatTotalDuration(data!.videos)
 
   return (
     <>
       <header>
-        <h1>{formatLabel(name)}</h1>
+        <h1>{formatLabel(name!)}</h1>
         <div className="meta">
-          <span>{data.total} videos</span>
-          <span>{data.watched} watched ({data.pct}%)</span>
+          <span>{data!.total} videos</span>
+          <span>{data!.watched} watched ({data!.pct}%)</span>
           <span className="meta-download">{downloaded} downloaded</span>
           {totalDuration && <span>{totalDuration} total</span>}
         </div>
-        <ProgressBar value={data.watched} max={data.total} />
-        <ProgressBar value={downloaded} max={data.total} variant="download" />
+        <ProgressBar value={data!.watched} max={data!.total} />
+        <ProgressBar value={downloaded} max={data!.total} variant="download" />
       </header>
 
       <section>
         <ol className="video-list">
-          {data.videos.map(v => (
+          {data!.videos.map(v => (
             <li key={v.index} className={`video-item${v.youtube_id === activeId ? ' video-item--active' : ''}`}>
               <span className="video-idx">{v.index}</span>
               <button
@@ -84,13 +88,26 @@ export default function Playlist() {
               <button
                 className="btn-play"
                 disabled={!v.has_video}
+                // TODO: refactor to useMutation
                 onClick={() => { setActiveId(v.youtube_id); fetch(`/api/play/${v.youtube_id}`, { method: 'POST' }) }}
               >
                 {v.has_video ? '▶ play' : '▶ local'}
               </button>
               {v.article && (
-                <button className="btn-article" onClick={() => fetch(`/api/articles/${v.article}`, { method: 'POST' })}>
-                  article
+                <button
+                  className={`btn-article${articleError === v.article ? ' btn-article--error' : ''}`}
+                  disabled={articleLoading === v.article}
+                  // TODO: refactor to useMutation (remove manual loading/error state)
+                  onClick={() => {
+                    setArticleLoading(v.article!)
+                    setArticleError(null)
+                    fetch(`/api/articles/${v.article}`, { method: 'POST' })
+                      .then(r => { if (!r.ok) throw new Error('failed') })
+                      .catch(() => setArticleError(v.article!))
+                      .finally(() => setArticleLoading(null))
+                  }}
+                >
+                  {articleLoading === v.article ? '...' : 'article'}
                 </button>
               )}
               <a className="external" href={`https://youtube.com/watch?v=${v.youtube_id}`} target="_blank" rel="noreferrer">
