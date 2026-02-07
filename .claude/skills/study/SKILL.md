@@ -26,10 +26,20 @@ python scripts/track.py queue done "<problem>"
 ```
 
 ### Open Videos/Articles
+
+**IMPORTANT: Always use FULL ABSOLUTE PATHS for glow and kitty. Do NOT omit the path — the command will silently fail.**
+
 ```bash
 open -a VLC "<video_path>"
-/Applications/kitty.app/Contents/MacOS/kitty --single-instance ~/go/bin/glow -p "<article_path>" &
+/Applications/kitty.app/Contents/MacOS/kitty --single-instance -e bash -c '~/go/bin/glow -p "<article_path>"; exec bash' &
 grep "^#" "<article_path>"  # Preview headers
+```
+
+**WRONG** (will fail silently):
+```bash
+kitty --single-instance glow article.md        # NO — kitty not in PATH
+kitty --single-instance -e glow article.md     # NO — glow not in PATH
+/Applications/kitty.app/Contents/MacOS/kitty --single-instance glow article.md  # NO — glow not in PATH
 ```
 
 ### Search Local Playlists

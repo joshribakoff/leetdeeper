@@ -109,6 +109,8 @@ My code is MIT. Submodules have their own licenses.
 
 *"The goal isn't to memorize solutions. It's to recognize patterns and understand why they work."*
 
+*Twitter says coding is dead. Geeks for Geeks says memorize these 500 patterns between the ads. Meanwhile, Sedgewick's masterwork sits there — decades of refinement, freely available — being ignored by an industry that mistakes pattern-matching for understanding. The people who actually learn this stuff deeply are more valuable now, not less. The memorizers were always one Google search away from their "skill."*
+
 *Also: if you don't use it, you lose it.* 🧠
 
 *Can't get laid off if you've already downloaded the entire interview prep internet.* 🎥
