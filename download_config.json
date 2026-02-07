@@ -1,0 +1,83 @@
+{
+  "mode": "priority",
+  "delays": {
+    "min_playlist": 600,
+    "max_playlist": 1200,
+    "min_video": 300,
+    "max_video": 600
+  },
+  "playlists": {
+    "neetcode-blind75": {
+      "url": "https://www.youtube.com/playlist?list=PLot-Xpze53ldVwtstag2TL4HQhAnC8ATf",
+      "priority": 1
+    },
+    "kevin-naughton": {
+      "jsonl": "youtube_kevin_naughton_leetcode.jsonl",
+      "priority": 2
+    },
+    "neetcode-dp": {
+      "url": "https://www.youtube.com/playlist?list=PLot-Xpze53lcvx_tjrr_m2lgD2NsRHlNO",
+      "priority": 2
+    },
+    "neetcode-trees": {
+      "url": "https://www.youtube.com/playlist?list=PLot-Xpze53ldg4pN6PfzoJY7KsKcxF1jg",
+      "priority": 3
+    },
+    "neetcode-graphs": {
+      "url": "https://www.youtube.com/playlist?list=PLot-Xpze53ldBT_7QA8NVot219jFNr_GI",
+      "priority": 4
+    },
+    "neetcode-backtracking": {
+      "url": "https://www.youtube.com/playlist?list=PLot-Xpze53lf5C3HSjCnyFghlW0G1HHXo",
+      "priority": 5
+    },
+    "neetcode-binary-search": {
+      "url": "https://www.youtube.com/playlist?list=PLot-Xpze53leNZQd0iINpD-MAhMOMzWvO",
+      "priority": 6
+    },
+    "neetcode-linked-list": {
+      "url": "https://www.youtube.com/playlist?list=PLot-Xpze53leU0Ec0VkBhnf4npMRFiNcB",
+      "priority": 7
+    },
+    "neetcode-stack": {
+      "url": "https://www.youtube.com/playlist?list=PLot-Xpze53lfxD6l5pAGvCD4nPvWKU8Qo",
+      "priority": 8
+    },
+    "neetcode-sliding-window": {
+      "url": "https://www.youtube.com/playlist?list=PLot-Xpze53leOBgcVsJBEGrHPd_7x_koV",
+      "priority": 9
+    },
+    "mit-6006-algorithms": {
+      "url": "https://www.youtube.com/playlist?list=PLUl4u3cNGP61Oq3tWYp6V_F-5jb5L2iHb",
+      "priority": 15
+    },
+    "abdul-bari-algorithms": {
+      "url": "https://www.youtube.com/playlist?list=PLDN4rrl48XKpZkf03iYFl-O29szjTrs_O",
+      "priority": 3
+    },
+    "mycodeschool-data-structures": {
+      "url": "https://www.youtube.com/playlist?list=PL2_aWCzGMAwI3W_JlcBbtYTwiQSsOTa6P",
+      "priority": 2
+    },
+    "mycodeschool-time-complexity": {
+      "url": "https://www.youtube.com/playlist?list=PL2_aWCzGMAwI9HK8YPVBjElbLbI3ufctn",
+      "priority": 3
+    },
+    "mycodeschool-recursion": {
+      "url": "https://www.youtube.com/playlist?list=PL2_aWCzGMAwLz3g66WrxFGSXvSsvyfzCO",
+      "priority": 4
+    },
+    "mycodeschool-sorting": {
+      "url": "https://www.youtube.com/playlist?list=PL2_aWCzGMAwKedT2KfDMB9YA5DgASZb3U",
+      "priority": 5
+    },
+    "mycodeschool-binary-search": {
+      "url": "https://www.youtube.com/playlist?list=PL2_aWCzGMAwL3ldWlrii6YeLszojgH77j",
+      "priority": 6
+    },
+    "mycodeschool-interview-questions": {
+      "url": "https://www.youtube.com/playlist?list=PL2_aWCzGMAwLPEZrZIcNEq9ukGWPfLT4A",
+      "priority": 7
+    }
+  }
+}

@@ -1,0 +1,11 @@
+.pattern-table { width: 100%; border-collapse: separate; border-spacing: 0 3px; }
+.pattern-table thead th { font-size: 0.7rem; color: var(--dim); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 500; padding: 0.25rem 0.75rem; text-align: left; }
+.pattern-table tbody td { padding: 0.6rem 0.75rem; background: var(--surface); font-size: 0.85rem; }
+.pattern-table tbody tr td:first-child { border-radius: var(--radius) 0 0 var(--radius); font-weight: 500; }
+.pattern-table tbody tr td:last-child { border-radius: 0 var(--radius) var(--radius) 0; }
+.pattern-table .num { text-align: right; font-variant-numeric: tabular-nums; font-size: 0.8rem; color: var(--dim); white-space: nowrap; }
+.pattern-table .num--done { color: var(--green); }
+.pattern-table .bar-cell { width: 180px; padding-left: 0.5rem; padding-right: 0; }
+.pattern-table .bar-cell .progress-label { display: none; }
+.pattern-table .bar-cell .progress-track { height: 10px; border-radius: 5px; }
+.pattern-table .bar-cell .progress-fill { border-radius: 5px; }

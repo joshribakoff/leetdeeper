@@ -1,14 +1,17 @@
 #!/usr/bin/env python3
 """LeetDeeper API server. JSON-only — frontend served by Vite in dev."""
 
+import json
 import subprocess
+import time
 from pathlib import Path
-from flask import Flask, jsonify, send_from_directory
+from flask import Flask, Response, jsonify, send_from_directory
 from flask.helpers import send_file
 from lib.playlists import list_playlists, load_playlist
 from lib.progress import playlist_progress, get_watched_ids, overall_summary
 from lib.media import enrich_videos
 from lib.patterns import analyze_by_pattern
+from lib.downloads import get_download_progress, get_download_config, update_download_config, get_download_activity, get_change_mtime, get_live_status
 
 VIDEOS_DIR = Path(__file__).parent / "videos" / "by-id"
 
@@ -60,6 +63,47 @@ def api_play(youtube_id):
 @app.route("/api/patterns")
 def api_patterns():
     return jsonify(analyze_by_pattern())
+
+
+@app.route("/api/downloads")
+def api_downloads():
+    return jsonify({
+        "playlists": get_download_progress(),
+        "config": get_download_config(),
+        "activity": get_download_activity(),
+        "live": get_live_status(),
+    })
+
+
+@app.route("/api/downloads/stream")
+def api_downloads_stream():
+    """SSE endpoint — pushes updates when download_log.jsonl or status changes."""
+    def generate():
+        last_mtime = 0
+        while True:
+            mtime = get_change_mtime()
+            if mtime != last_mtime:
+                last_mtime = mtime
+                data = {
+                    "playlists": get_download_progress(),
+                    "config": get_download_config(),
+                    "activity": get_download_activity(),
+                    "live": get_live_status(),
+                }
+                yield f"data: {json.dumps(data)}\n\n"
+            time.sleep(2)
+
+    return Response(generate(), mimetype="text/event-stream", headers={
+        "Cache-Control": "no-cache",
+        "X-Accel-Buffering": "no",
+    })
+
+
+@app.route("/api/downloads/config", methods=["POST"])
+def api_update_downloads_config():
+    from flask import request
+    update_download_config(request.json)
+    return jsonify({"ok": True})
 
 
 if __name__ == "__main__":

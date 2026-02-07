@@ -25,97 +25,19 @@ VIDEOS_DIR = REPO_ROOT / "videos"
 BY_ID_DIR = VIDEOS_DIR / "by-id"
 PLAYLISTS_DIR = REPO_ROOT / "playlists"
 LOG_FILE = REPO_ROOT / "download_log.jsonl"
+CONFIG_FILE = REPO_ROOT / "download_config.json"
+STATUS_FILE = REPO_ROOT / "download_status.json"
 
 DENO_PATH = os.path.expanduser("~/.deno/bin")
 FFMPEG_PATH = os.path.expanduser("~/.local/bin")
 
-# Delay between playlists (10-20 minutes)
-MIN_PLAYLIST_DELAY = 10 * 60
-MAX_PLAYLIST_DELAY = 20 * 60
 
-# Delay between videos within a playlist (5-10 min)
-MIN_VIDEO_DELAY = 5 * 60
-MAX_VIDEO_DELAY = 10 * 60
-
-PLAYLISTS = {
-    # Primary - NeetCode
-    "neetcode-blind75": {
-        "url": "https://www.youtube.com/playlist?list=PLot-Xpze53ldVwtstag2TL4HQhAnC8ATf",
-        "priority": 1,
-    },
-    # Kevin Naughton - curated from channel (no playlist URL, uses pre-cached JSONL)
-    "kevin-naughton": {
-        "jsonl": "youtube_kevin_naughton_leetcode.jsonl",  # Pre-cached, no URL fetch needed
-        "priority": 2,  # Prioritized for speedrun coverage
-    },
-    "neetcode-dp": {
-        "url": "https://www.youtube.com/playlist?list=PLot-Xpze53lcvx_tjrr_m2lgD2NsRHlNO",
-        "priority": 2,
-    },
-    "neetcode-trees": {
-        "url": "https://www.youtube.com/playlist?list=PLot-Xpze53ldg4pN6PfzoJY7KsKcxF1jg",
-        "priority": 3,
-    },
-    "neetcode-graphs": {
-        "url": "https://www.youtube.com/playlist?list=PLot-Xpze53ldBT_7QA8NVot219jFNr_GI",
-        "priority": 4,
-    },
-    "neetcode-backtracking": {
-        "url": "https://www.youtube.com/playlist?list=PLot-Xpze53lf5C3HSjCnyFghlW0G1HHXo",
-        "priority": 5,
-    },
-    "neetcode-binary-search": {
-        "url": "https://www.youtube.com/playlist?list=PLot-Xpze53leNZQd0iINpD-MAhMOMzWvO",
-        "priority": 6,
-    },
-    "neetcode-linked-list": {
-        "url": "https://www.youtube.com/playlist?list=PLot-Xpze53leU0Ec0VkBhnf4npMRFiNcB",
-        "priority": 7,
-    },
-    "neetcode-stack": {
-        "url": "https://www.youtube.com/playlist?list=PLot-Xpze53lfxD6l5pAGvCD4nPvWKU8Qo",
-        "priority": 8,
-    },
-    "neetcode-sliding-window": {
-        "url": "https://www.youtube.com/playlist?list=PLot-Xpze53leOBgcVsJBEGrHPd_7x_koV",
-        "priority": 9,
-    },
-    # MIT - dense CS theory (deprioritized)
-    "mit-6006-algorithms": {
-        "url": "https://www.youtube.com/playlist?list=PLUl4u3cNGP61Oq3tWYp6V_F-5jb5L2iHb",
-        "priority": 15,
-    },
-    # Abdul Bari - deeper theory
-    "abdul-bari-algorithms": {
-        "url": "https://www.youtube.com/playlist?list=PLDN4rrl48XKpZkf03iYFl-O29szjTrs_O",
-        "priority": 3,  # Prioritized for algorithm depth
-    },
-    # mycodeschool - approachable CS fundamentals (high priority)
-    "mycodeschool-data-structures": {
-        "url": "https://www.youtube.com/playlist?list=PL2_aWCzGMAwI3W_JlcBbtYTwiQSsOTa6P",
-        "priority": 2,
-    },
-    "mycodeschool-time-complexity": {
-        "url": "https://www.youtube.com/playlist?list=PL2_aWCzGMAwI9HK8YPVBjElbLbI3ufctn",
-        "priority": 3,
-    },
-    "mycodeschool-recursion": {
-        "url": "https://www.youtube.com/playlist?list=PL2_aWCzGMAwLz3g66WrxFGSXvSsvyfzCO",
-        "priority": 4,
-    },
-    "mycodeschool-sorting": {
-        "url": "https://www.youtube.com/playlist?list=PL2_aWCzGMAwKedT2KfDMB9YA5DgASZb3U",
-        "priority": 5,
-    },
-    "mycodeschool-binary-search": {
-        "url": "https://www.youtube.com/playlist?list=PL2_aWCzGMAwL3ldWlrii6YeLszojgH77j",
-        "priority": 6,
-    },
-    "mycodeschool-interview-questions": {
-        "url": "https://www.youtube.com/playlist?list=PL2_aWCzGMAwLPEZrZIcNEq9ukGWPfLT4A",
-        "priority": 7,
-    },
-}
+def load_config() -> dict:
+    """Load config from download_config.json. Falls back to defaults."""
+    if CONFIG_FILE.exists():
+        with open(CONFIG_FILE) as f:
+            return json.load(f)
+    return {"mode": "priority", "delays": {}, "playlists": {}}
 
 
 def log(msg: str):
@@ -127,6 +49,12 @@ def log_event(event: dict):
     event["timestamp"] = datetime.now().isoformat()
     with open(LOG_FILE, "a") as f:
         f.write(json.dumps(event) + "\n")
+
+
+def write_status(state: str, **kwargs):
+    """Write current downloader status to a JSON file for the web UI."""
+    data = {"state": state, "timestamp": datetime.now().isoformat(), **kwargs}
+    STATUS_FILE.write_text(json.dumps(data))
 
 
 def get_env():
@@ -260,8 +188,11 @@ def load_cached_jsonl(name: str, config: dict) -> list | None:
     return None
 
 
-def download_playlist(name: str, config: dict, info_only: bool = False):
+def download_playlist(name: str, config: dict, info_only: bool = False, cfg: dict = None):
     """Download all videos from a playlist with rate limiting."""
+    if cfg is None:
+        cfg = load_config()
+    _, _, min_vid, max_vid = get_delays(cfg)
     playlist_dir = VIDEOS_DIR / name
     playlist_dir.mkdir(parents=True, exist_ok=True)
     BY_ID_DIR.mkdir(parents=True, exist_ok=True)
@@ -319,16 +250,21 @@ def download_playlist(name: str, config: dict, info_only: bool = False):
             continue
 
         log(f"Downloading {name} video {i}/{total}: {video_title}...")
+        write_status("downloading", playlist=name, index=i, total=total,
+                     title=video_title, youtube_id=youtube_id)
+        dl_start = time.time()
         success, rate_limited = download_video_by_id(youtube_id)
+        dl_elapsed = round(time.time() - dl_start)
 
         if success:
             create_symlink(youtube_id, playlist_dir, i, video_title)
             download_thumbnail(youtube_id)
             downloaded += 1
-            log_event({"type": "video_downloaded", "playlist": name, "index": i, "youtube_id": youtube_id})
+            log_event({"type": "video_downloaded", "playlist": name, "index": i,
+                        "youtube_id": youtube_id, "elapsed_sec": dl_elapsed})
         elif rate_limited:
-            # Fail-fast: stop immediately on 403
             log(f"STOPPING: Rate limited (403) - try again in a few hours")
+            write_status("rate_limited", playlist=name, index=i)
             log_event({"type": "rate_limit_detected", "playlist": name, "index": i, "youtube_id": youtube_id})
             raise SystemExit(1)
         else:
@@ -337,7 +273,10 @@ def download_playlist(name: str, config: dict, info_only: bool = False):
 
         # Delay between videos
         if i < total:
-            delay = random.randint(MIN_VIDEO_DELAY, MAX_VIDEO_DELAY)
+            delay = random.randint(min_vid, max_vid)
+            resume_at = datetime.now().timestamp() + delay
+            write_status("waiting", playlist=name, next_index=i + 1, total=total,
+                         delay_sec=delay, resume_at=resume_at)
             log(f"Waiting {delay // 60}m {delay % 60}s before next video...")
             time.sleep(delay)
 
@@ -351,34 +290,120 @@ def download_playlist(name: str, config: dict, info_only: bool = False):
     })
 
 
+def get_delays(cfg: dict) -> tuple:
+    """Get delay settings from config."""
+    d = cfg.get("delays", {})
+    return (
+        d.get("min_playlist", 600),
+        d.get("max_playlist", 1200),
+        d.get("min_video", 300),
+        d.get("max_video", 600),
+    )
+
+
+def run_priority(playlists: dict, cfg: dict, info_only: bool):
+    """Download playlists in priority order (finish each before moving on)."""
+    min_pl, max_pl, _, _ = get_delays(cfg)
+    sorted_pl = sorted(playlists.items(), key=lambda x: x[1].get("priority", 99))
+
+    for i, (name, config) in enumerate(sorted_pl):
+        # Reload config each playlist to pick up changes
+        fresh = load_config()
+        fresh_delays = fresh.get("delays", {})
+        min_pl = fresh_delays.get("min_playlist", min_pl)
+        max_pl = fresh_delays.get("max_playlist", max_pl)
+
+        download_playlist(name, config, info_only)
+
+        if i < len(sorted_pl) - 1:
+            delay = random.randint(min_pl, max_pl)
+            log(f"Waiting {delay // 60}m {delay % 60}s before next playlist...")
+            time.sleep(delay)
+
+
+def run_round_robin(playlists: dict, cfg: dict, info_only: bool):
+    """Download one video from each playlist, then rotate. Higher priority = more turns."""
+    min_pl, max_pl, _, _ = get_delays(cfg)
+    sorted_pl = sorted(playlists.items(), key=lambda x: x[1].get("priority", 99))
+
+    # Build per-playlist state: load entries and track position
+    states = {}
+    for name, config in sorted_pl:
+        entries = load_cached_jsonl(name, config)
+        if not entries and "url" in config:
+            info = get_playlist_info(config["url"])
+            entries = info.get("entries", []) if "error" not in info else []
+            if entries:
+                save_playlist_jsonl(name, entries)
+        if not entries:
+            continue
+        states[name] = {"config": config, "entries": entries, "pos": 0}
+        # Skip already-downloaded videos at the front
+        while states[name]["pos"] < len(entries):
+            eid = entries[states[name]["pos"]].get("id")
+            if eid and not video_exists_by_id(eid):
+                break
+            states[name]["pos"] += 1
+
+    if info_only:
+        return
+
+    while states:
+        for name in list(states.keys()):
+            st = states[name]
+            if st["pos"] >= len(st["entries"]):
+                del states[name]
+                continue
+
+            entry = st["entries"][st["pos"]]
+            youtube_id = entry.get("id")
+            video_title = entry.get("title", "Unknown")
+            playlist_dir = VIDEOS_DIR / name
+            playlist_dir.mkdir(parents=True, exist_ok=True)
+
+            if youtube_id and not video_exists_by_id(youtube_id):
+                log(f"[round-robin] {name} {st['pos']+1}/{len(st['entries'])}: {video_title}")
+                success, rate_limited = download_video_by_id(youtube_id)
+                if success:
+                    create_symlink(youtube_id, playlist_dir, st["pos"] + 1, video_title)
+                    download_thumbnail(youtube_id)
+                    log_event({"type": "video_downloaded", "playlist": name, "youtube_id": youtube_id})
+                elif rate_limited:
+                    log("STOPPING: Rate limited (403)")
+                    log_event({"type": "rate_limit_detected", "playlist": name, "youtube_id": youtube_id})
+                    raise SystemExit(1)
+
+                delay = random.randint(min_pl, max_pl)
+                log(f"Waiting {delay // 60}m {delay % 60}s...")
+                time.sleep(delay)
+
+            st["pos"] += 1
+
+
 def main():
     parser = argparse.ArgumentParser(description="Download YouTube playlists")
     parser.add_argument("--info-only", action="store_true", help="Only fetch playlist info, don't download")
     parser.add_argument("--playlist", type=str, help="Download only this playlist")
     args = parser.parse_args()
 
-    playlists = PLAYLISTS
+    cfg = load_config()
+    playlists = cfg.get("playlists", {})
+    mode = cfg.get("mode", "priority")
+
     if args.playlist:
-        if args.playlist not in PLAYLISTS:
+        if args.playlist not in playlists:
             print(f"Unknown playlist: {args.playlist}")
-            print(f"Available: {', '.join(PLAYLISTS.keys())}")
+            print(f"Available: {', '.join(playlists.keys())}")
             sys.exit(1)
-        playlists = {args.playlist: PLAYLISTS[args.playlist]}
+        playlists = {args.playlist: playlists[args.playlist]}
 
-    # Sort by priority
-    sorted_playlists = sorted(playlists.items(), key=lambda x: x[1].get("priority", 99))
+    log(f"Starting download ({mode} mode) of {len(playlists)} playlists")
+    log_event({"type": "run_start", "mode": mode, "playlists": list(playlists.keys()), "info_only": args.info_only})
 
-    log(f"Starting download of {len(sorted_playlists)} playlists")
-    log_event({"type": "run_start", "playlists": list(playlists.keys()), "info_only": args.info_only})
-
-    for i, (name, config) in enumerate(sorted_playlists):
-        download_playlist(name, config, args.info_only)
-
-        # Delay between playlists
-        if i < len(sorted_playlists) - 1:
-            delay = random.randint(MIN_PLAYLIST_DELAY, MAX_PLAYLIST_DELAY)
-            log(f"Waiting {delay // 60}m {delay % 60}s before next playlist...")
-            time.sleep(delay)
+    if mode == "round-robin":
+        run_round_robin(playlists, cfg, args.info_only)
+    else:
+        run_priority(playlists, cfg, args.info_only)
 
     log("All downloads complete")
     log_event({"type": "run_complete"})

@@ -1,17 +1,14 @@
-import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { useApi } from '../hooks/useApi'
+import { Loading, ErrorMsg } from '../components/Status'
 import ProgressBar from '../components/ProgressBar'
 
 export default function Home() {
-  const [summary, setSummary] = useState(null)
-  const [patterns, setPatterns] = useState(null)
+  const { data: summary, isLoading, error } = useApi('summary', '/api/summary')
+  const { data: patterns } = useApi('patterns', '/api/patterns')
 
-  useEffect(() => {
-    fetch('/api/summary').then(r => r.json()).then(setSummary)
-    fetch('/api/patterns').then(r => r.json()).then(setPatterns)
-  }, [])
-
-  if (!summary) return <p className="loading">Loading...</p>
+  if (isLoading) return <Loading />
+  if (error) return <ErrorMsg error={error} />
 
   return (
     <>

@@ -1,14 +1,55 @@
-import { useState, useEffect } from 'react'
+import { useMemo } from 'react'
+import { useApi } from '../hooks/useApi'
+import { Loading, ErrorMsg } from '../components/Status'
 import ProgressBar from '../components/ProgressBar'
+import SortableTable from '../components/SortableTable'
 
 export default function Patterns() {
-  const [data, setData] = useState(null)
+  const { data, isLoading, error } = useApi('patterns', '/api/patterns')
 
-  useEffect(() => {
-    fetch('/api/patterns').then(r => r.json()).then(setData)
-  }, [])
+  const columns = useMemo(() => [
+    {
+      accessorKey: 'name',
+      header: 'Pattern',
+    },
+    {
+      id: 'watched',
+      header: 'Watched',
+      accessorFn: row => row.videos_total ? row.videos_watched / row.videos_total : 0,
+      meta: { className: 'bar-cell', cellClassName: 'bar-cell' },
+      cell: ({ row }) => <ProgressBar value={row.original.videos_watched} max={row.original.videos_total} />,
+    },
+    {
+      id: 'watched_count',
+      header: '',
+      accessorFn: row => row.videos_watched,
+      meta: { cellClassName: 'num' },
+      cell: ({ row }) => <>{row.original.videos_watched}/{row.original.videos_total}</>,
+      enableSorting: false,
+    },
+    {
+      id: 'solved',
+      header: 'Solved',
+      accessorFn: row => row.problems_total ? row.problems_completed / row.problems_total : 0,
+      meta: { className: 'bar-cell', cellClassName: 'bar-cell' },
+      cell: ({ row }) => <ProgressBar value={row.original.problems_completed} max={row.original.problems_total} />,
+    },
+    {
+      id: 'solved_count',
+      header: '',
+      accessorFn: row => row.problems_completed,
+      meta: { cellClassName: 'num' },
+      cell: ({ row }) => (
+        <span className={row.original.problems_completed > 0 ? 'num--done' : ''}>
+          {row.original.problems_completed}/{row.original.problems_total}
+        </span>
+      ),
+      enableSorting: false,
+    },
+  ], [])
 
-  if (!data) return <p className="loading">Loading...</p>
+  if (isLoading) return <Loading />
+  if (error) return <ErrorMsg error={error} />
 
   return (
     <>
@@ -22,30 +63,11 @@ export default function Patterns() {
       </header>
 
       <section>
-        <table className="pattern-table">
-          <thead>
-            <tr>
-              <th>Pattern</th>
-              <th className="bar-cell">Watched</th>
-              <th></th>
-              <th className="bar-cell">Solved</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            {data.patterns.map(p => (
-              <tr key={p.name}>
-                <td>{p.name}</td>
-                <td className="bar-cell"><ProgressBar value={p.videos_watched} max={p.videos_total} /></td>
-                <td className="num">{p.videos_watched}/{p.videos_total}</td>
-                <td className="bar-cell"><ProgressBar value={p.problems_completed} max={p.problems_total} /></td>
-                <td className={`num${p.problems_completed > 0 ? ' num--done' : ''}`}>
-                  {p.problems_completed}/{p.problems_total}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <SortableTable
+          data={data.patterns}
+          columns={columns}
+          initialSort={[{ id: 'name', desc: false }]}
+        />
       </section>
     </>
   )

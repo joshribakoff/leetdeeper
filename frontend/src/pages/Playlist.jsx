@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
+import { useApi } from '../hooks/useApi'
+import { Loading, ErrorMsg } from '../components/Status'
 import ProgressBar from '../components/ProgressBar'
 
 function formatLabel(name) {
@@ -16,13 +17,10 @@ function formatTotalDuration(videos) {
 
 export default function Playlist() {
   const { name } = useParams()
-  const [data, setData] = useState(null)
+  const { data, isLoading, error } = useApi(`playlist-${name}`, `/api/playlists/${name}`)
 
-  useEffect(() => {
-    fetch(`/api/playlists/${name}`).then(r => r.json()).then(setData)
-  }, [name])
-
-  if (!data) return <p className="loading">Loading...</p>
+  if (isLoading) return <Loading />
+  if (error) return <ErrorMsg error={error} />
 
   const downloaded = data.videos.filter(v => v.has_video).length
   const totalDuration = formatTotalDuration(data.videos)
@@ -56,15 +54,16 @@ export default function Playlist() {
               />
               <span className="video-title">{v.title}</span>
               {v.duration_fmt && <span className="video-duration">{v.duration_fmt}</span>}
-              {v.has_video ? (
-                <button className="btn-play" onClick={() => fetch(`/api/play/${v.youtube_id}`, { method: 'POST' })}>
-                  play
-                </button>
-              ) : (
-                <a className="external" href={`https://youtube.com/watch?v=${v.youtube_id}`} target="_blank" rel="noreferrer">
-                  youtube
-                </a>
-              )}
+              <button
+                className="btn-play"
+                disabled={!v.has_video}
+                onClick={() => fetch(`/api/play/${v.youtube_id}`, { method: 'POST' })}
+              >
+                {v.has_video ? '▶ play' : '▶ local'}
+              </button>
+              <a className="external" href={`https://youtube.com/watch?v=${v.youtube_id}`} target="_blank" rel="noreferrer">
+                yt
+              </a>
             </li>
           ))}
         </ol>
