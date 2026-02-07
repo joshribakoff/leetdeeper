@@ -5,12 +5,12 @@ import Patterns from './pages/Patterns'
 
 export default function App() {
   return (
-    <div style={{ maxWidth: 960, margin: '0 auto', padding: '24px 16px' }}>
+    <main className="container">
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/patterns" element={<Patterns />} />
         <Route path="/playlist/:name" element={<Playlist />} />
       </Routes>
-    </div>
+    </main>
   )
 }
