@@ -153,6 +153,8 @@ a.external:hover { color: var(--accent); }
 .video-thumb { width: 80px; height: 45px; object-fit: cover; border-radius: 4px; background: var(--bar-bg); flex-shrink: 0; }
 .video-title { flex: 1; line-height: 1.3; }
 .video-duration { color: var(--dim); font-size: 0.75rem; font-variant-numeric: tabular-nums; min-width: 2.5rem; text-align: right; }
+.btn-play { background: none; border: none; color: var(--accent); font: inherit; font-size: 0.8rem; cursor: pointer; padding: 0; transition: color 0.15s; }
+.btn-play:hover { color: var(--green); }
 
 /* Sections */
 

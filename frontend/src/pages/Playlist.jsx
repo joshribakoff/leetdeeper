@@ -56,9 +56,15 @@ export default function Playlist() {
               />
               <span className="video-title">{v.title}</span>
               {v.duration_fmt && <span className="video-duration">{v.duration_fmt}</span>}
-              <a className="external" href={`https://youtube.com/watch?v=${v.youtube_id}`} target="_blank" rel="noreferrer">
-                watch
-              </a>
+              {v.has_video ? (
+                <button className="btn-play" onClick={() => fetch(`/api/play/${v.youtube_id}`, { method: 'POST' })}>
+                  play
+                </button>
+              ) : (
+                <a className="external" href={`https://youtube.com/watch?v=${v.youtube_id}`} target="_blank" rel="noreferrer">
+                  youtube
+                </a>
+              )}
             </li>
           ))}
         </ol>

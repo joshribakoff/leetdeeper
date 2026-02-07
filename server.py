@@ -1,12 +1,16 @@
 #!/usr/bin/env python3
 """LeetDeeper API server. JSON-only — frontend served by Vite in dev."""
 
+import subprocess
+from pathlib import Path
 from flask import Flask, jsonify, send_from_directory
 from flask.helpers import send_file
 from lib.playlists import list_playlists, load_playlist
 from lib.progress import playlist_progress, get_watched_ids, overall_summary
 from lib.media import enrich_videos
 from lib.patterns import analyze_by_pattern
+
+VIDEOS_DIR = Path(__file__).parent / "videos" / "by-id"
 
 app = Flask(__name__, static_folder="static", static_url_path="")
 
@@ -41,6 +45,16 @@ def api_playlist(name):
     enrich_videos(videos)
     stats = playlist_progress(name, videos)
     return jsonify({"name": name, "videos": videos, **stats})
+
+
+@app.route("/api/play/<youtube_id>", methods=["POST"])
+def api_play(youtube_id):
+    """Open a video in VLC."""
+    video = VIDEOS_DIR / f"{youtube_id}.mp4"
+    if not video.exists():
+        return jsonify({"error": "video not found"}), 404
+    subprocess.Popen(["open", "-a", "VLC", str(video)])
+    return jsonify({"ok": True})
 
 
 @app.route("/api/patterns")
