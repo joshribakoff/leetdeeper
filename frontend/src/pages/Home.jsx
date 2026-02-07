@@ -22,7 +22,6 @@ export default function Home() {
   return (
     <>
       <header>
-        <h1>LeetDeeper</h1>
         <p className="subtitle">
           {summary.total_videos_watched} videos watched &middot; {summary.total_problems_solved} problems solved
         </p>

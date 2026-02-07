@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useParams, Link } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import ProgressBar from '../components/ProgressBar'
 
 function formatLabel(name) {
@@ -29,8 +29,6 @@ export default function Playlist() {
 
   return (
     <>
-      <Link to="/" className="back">Back</Link>
-
       <header>
         <h1>{formatLabel(name)}</h1>
         <div className="meta">
