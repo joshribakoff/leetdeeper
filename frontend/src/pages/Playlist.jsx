@@ -1,4 +1,6 @@
+import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
+import { useQueryClient } from '@tanstack/react-query'
 import { useApi } from '../hooks/useApi'
 import { Loading, ErrorMsg } from '../components/Status'
 import ProgressBar from '../components/ProgressBar'
@@ -17,11 +19,27 @@ function formatTotalDuration(videos) {
 
 export default function Playlist() {
   const { name } = useParams()
+  const qc = useQueryClient()
   const { data, isLoading, error } = useApi(`playlist-${name}`, `/api/playlists/${name}`)
+
+  useEffect(() => {
+    const es = new EventSource('/api/progress/stream')
+    es.onmessage = () => qc.invalidateQueries({ queryKey: [`playlist-${name}`] })
+    return () => es.close()
+  }, [name, qc])
 
   if (isLoading) return <Loading />
   if (error) return <ErrorMsg error={error} />
 
+  function toggleWatch(v) {
+    fetch(`/api/watch/${v.youtube_id}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ playlist: name, index: v.index, title: v.title }),
+    }).then(() => qc.invalidateQueries({ queryKey: [`playlist-${name}`] }))
+  }
+
+  const [activeId, setActiveId] = useState(null)
   const downloaded = data.videos.filter(v => v.has_video).length
   const totalDuration = formatTotalDuration(data.videos)
 
@@ -32,20 +50,25 @@ export default function Playlist() {
         <div className="meta">
           <span>{data.total} videos</span>
           <span>{data.watched} watched ({data.pct}%)</span>
-          <span>{downloaded} downloaded</span>
+          <span className="meta-download">{downloaded} downloaded</span>
           {totalDuration && <span>{totalDuration} total</span>}
         </div>
         <ProgressBar value={data.watched} max={data.total} />
+        <ProgressBar value={downloaded} max={data.total} variant="download" />
       </header>
 
       <section>
         <ol className="video-list">
           {data.videos.map(v => (
-            <li key={v.index} className="video-item">
+            <li key={v.index} className={`video-item${v.youtube_id === activeId ? ' video-item--active' : ''}`}>
               <span className="video-idx">{v.index}</span>
-              <span className={`video-check ${v.watched ? 'video-check--yes' : 'video-check--no'}`}>
+              <button
+                className={`video-check ${v.watched ? 'video-check--yes' : 'video-check--no'}`}
+                onClick={() => toggleWatch(v)}
+                title={v.watched ? 'Mark unwatched' : 'Mark watched'}
+              >
                 {v.watched ? '\u2713' : '\u25CB'}
-              </span>
+              </button>
               <img
                 className="video-thumb"
                 src={`/thumbs/${v.youtube_id}.jpg`}
@@ -54,13 +77,22 @@ export default function Playlist() {
               />
               <span className="video-title">{v.title}</span>
               {v.duration_fmt && <span className="video-duration">{v.duration_fmt}</span>}
+              <span className={`dl-indicator ${v.has_video ? 'dl-indicator--yes' : 'dl-indicator--no'}`}
+                title={v.has_video ? 'Downloaded' : 'Not downloaded'}>
+                {v.has_video ? '\u25CF' : '\u25CB'}
+              </span>
               <button
                 className="btn-play"
                 disabled={!v.has_video}
-                onClick={() => fetch(`/api/play/${v.youtube_id}`, { method: 'POST' })}
+                onClick={() => { setActiveId(v.youtube_id); fetch(`/api/play/${v.youtube_id}`, { method: 'POST' }) }}
               >
                 {v.has_video ? '▶ play' : '▶ local'}
               </button>
+              {v.article && (
+                <button className="btn-article" onClick={() => fetch(`/api/articles/${v.article}`, { method: 'POST' })}>
+                  article
+                </button>
+              )}
               <a className="external" href={`https://youtube.com/watch?v=${v.youtube_id}`} target="_blank" rel="noreferrer">
                 yt
               </a>
@@ -68,6 +100,7 @@ export default function Playlist() {
           ))}
         </ol>
       </section>
+
     </>
   )
 }
