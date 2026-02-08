@@ -98,18 +98,32 @@ def format_duration(seconds: int | None) -> str:
     return f"{seconds // 60}:{seconds % 60:02d}"
 
 
-ARTICLE_MAP_FILE = REPO_ROOT / "neetcode" / "article_map.json"
+ARTICLES_DIR = REPO_ROOT / "neetcode" / "articles"
+ARTICLE_OVERRIDES_FILE = REPO_ROOT / "article_overrides.json"
 
 
-def _load_article_map() -> dict:
-    if ARTICLE_MAP_FILE.exists():
-        return json.loads(ARTICLE_MAP_FILE.read_text())
+def _load_overrides() -> dict:
+    if ARTICLE_OVERRIDES_FILE.exists():
+        return json.loads(ARTICLE_OVERRIDES_FILE.read_text())
     return {}
 
 
-def find_article(youtube_id: str) -> str | None:
-    """Look up article slug for a youtube_id from the curated mapping."""
-    return _load_article_map().get(youtube_id)
+def find_article(title: str) -> str | None:
+    """Derive article slug from video title, check if file exists."""
+    import re
+    # Check title overrides first (for mismatched naming)
+    overrides = _load_overrides()
+    if title in overrides:
+        slug = overrides[title]
+        if (ARTICLES_DIR / f"{slug}.md").exists():
+            return slug
+    # Auto-derive: strip "- Leetcode NNN" suffix, slugify
+    slug = re.sub(r"\s*-\s*[Ll]eet[Cc]ode\s*\d+\s*$", "", title)
+    slug = slug.strip().lower().replace(" ", "-")
+    slug = re.sub(r"[^a-z0-9-]", "", slug)
+    if (ARTICLES_DIR / f"{slug}.md").exists():
+        return slug
+    return None
 
 
 def enrich_videos(videos: list[dict]) -> list[dict]:
@@ -126,7 +140,7 @@ def enrich_videos(videos: list[dict]) -> list[dict]:
         thumb = THUMBS_DIR / f"{yt_id}.jpg"
         v["thumbnail"] = str(Path("thumbs") / f"{yt_id}.jpg") if thumb.exists() else None
         # Article
-        v["article"] = find_article(yt_id)
+        v["article"] = find_article(v.get("title", ""))
     return videos
 
 
