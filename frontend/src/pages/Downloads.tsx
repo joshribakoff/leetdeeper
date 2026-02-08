@@ -221,7 +221,7 @@ export default function Downloads() {
     {
       accessorKey: 'label',
       header: 'Playlist',
-      cell: ({ row }) => <Link to={`/playlists/${row.original.name}`}>{row.original.label}</Link>,
+      cell: ({ row }) => <Link to={`/playlist/youtube_${row.original.name.replace(/-/g, '_')}`}>{row.original.label}</Link>,
     },
     {
       id: 'creator',

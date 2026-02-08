@@ -1,4 +1,4 @@
-"""Media metadata: thumbnails and duration via ffmpeg."""
+"""Media metadata: thumbnails, duration, and article linking."""
 
 import json
 import re
@@ -7,6 +7,7 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).parent.parent
 VIDEOS_DIR = REPO_ROOT / "videos" / "by-id"
+ARTICLES_DIR = REPO_ROOT / "neetcode" / "articles"
 THUMBS_DIR = REPO_ROOT / "static" / "thumbs"
 CACHE_PATH = REPO_ROOT / "static" / "media_cache.json"
 FFMPEG = Path.home() / ".local" / "bin" / "ffmpeg"
@@ -97,8 +98,22 @@ def format_duration(seconds: int | None) -> str:
     return f"{seconds // 60}:{seconds % 60:02d}"
 
 
+ARTICLE_MAP_FILE = REPO_ROOT / "neetcode" / "article_map.json"
+
+
+def _load_article_map() -> dict:
+    if ARTICLE_MAP_FILE.exists():
+        return json.loads(ARTICLE_MAP_FILE.read_text())
+    return {}
+
+
+def find_article(youtube_id: str) -> str | None:
+    """Look up article slug for a youtube_id from the curated mapping."""
+    return _load_article_map().get(youtube_id)
+
+
 def enrich_videos(videos: list[dict]) -> list[dict]:
-    """Add duration and thumbnail to video list. Only uses cached data — never blocks on ffmpeg."""
+    """Add duration, thumbnail, and article info to video list."""
     cache = _load_cache()
     for v in videos:
         yt_id = v.get("youtube_id", "")
@@ -110,6 +125,8 @@ def enrich_videos(videos: list[dict]) -> list[dict]:
         # Thumbnail only if already generated
         thumb = THUMBS_DIR / f"{yt_id}.jpg"
         v["thumbnail"] = str(Path("thumbs") / f"{yt_id}.jpg") if thumb.exists() else None
+        # Article
+        v["article"] = find_article(yt_id)
     return videos
 
 
