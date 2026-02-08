@@ -1,0 +1,75 @@
+{"problem_id": 1, "title": "Two Sum", "difficulty": "Easy", "pattern": "Arrays & Hashing"}
+{"problem_id": 3, "title": "Longest Substring Without Repeating Characters", "difficulty": "Medium", "pattern": "Sliding Window"}
+{"problem_id": 5, "title": "Longest Palindromic Substring", "difficulty": "Medium", "pattern": "1-D Dynamic Programming"}
+{"problem_id": 11, "title": "Container With Most Water", "difficulty": "Medium", "pattern": "Two Pointers"}
+{"problem_id": 15, "title": "3Sum", "difficulty": "Medium", "pattern": "Two Pointers"}
+{"problem_id": 19, "title": "Remove Nth Node From End of List", "difficulty": "Medium", "pattern": "Linked List"}
+{"problem_id": 20, "title": "Valid Parentheses", "difficulty": "Easy", "pattern": "Stack"}
+{"problem_id": 21, "title": "Merge Two Sorted Lists", "difficulty": "Easy", "pattern": "Linked List"}
+{"problem_id": 23, "title": "Merge K Sorted Lists", "difficulty": "Hard", "pattern": "Linked List"}
+{"problem_id": 33, "title": "Search In Rotated Sorted Array", "difficulty": "Medium", "pattern": "Binary Search"}
+{"problem_id": 39, "title": "Combination Sum", "difficulty": "Medium", "pattern": "Backtracking"}
+{"problem_id": 48, "title": "Rotate Image", "difficulty": "Medium", "pattern": "Math & Geometry"}
+{"problem_id": 49, "title": "Group Anagrams", "difficulty": "Medium", "pattern": "Arrays & Hashing"}
+{"problem_id": 53, "title": "Maximum Subarray", "difficulty": "Medium", "pattern": "Greedy"}
+{"problem_id": 54, "title": "Spiral Matrix", "difficulty": "Medium", "pattern": "Math & Geometry"}
+{"problem_id": 55, "title": "Jump Game", "difficulty": "Medium", "pattern": "Greedy"}
+{"problem_id": 56, "title": "Merge Intervals", "difficulty": "Medium", "pattern": "Intervals"}
+{"problem_id": 57, "title": "Insert Interval", "difficulty": "Medium", "pattern": "Intervals"}
+{"problem_id": 62, "title": "Unique Paths", "difficulty": "Medium", "pattern": "2-D Dynamic Programming"}
+{"problem_id": 70, "title": "Climbing Stairs", "difficulty": "Easy", "pattern": "1-D Dynamic Programming"}
+{"problem_id": 73, "title": "Set Matrix Zeroes", "difficulty": "Medium", "pattern": "Math & Geometry"}
+{"problem_id": 76, "title": "Minimum Window Substring", "difficulty": "Hard", "pattern": "Sliding Window"}
+{"problem_id": 79, "title": "Word Search", "difficulty": "Medium", "pattern": "Backtracking"}
+{"problem_id": 91, "title": "Decode Ways", "difficulty": "Medium", "pattern": "1-D Dynamic Programming"}
+{"problem_id": 98, "title": "Validate Binary Search Tree", "difficulty": "Medium", "pattern": "Trees"}
+{"problem_id": 100, "title": "Same Tree", "difficulty": "Easy", "pattern": "Trees"}
+{"problem_id": 102, "title": "Binary Tree Level Order Traversal", "difficulty": "Medium", "pattern": "Trees"}
+{"problem_id": 104, "title": "Maximum Depth of Binary Tree", "difficulty": "Easy", "pattern": "Trees"}
+{"problem_id": 105, "title": "Construct Binary Tree From Preorder And Inorder Traversal", "difficulty": "Medium", "pattern": "Trees"}
+{"problem_id": 121, "title": "Best Time to Buy And Sell Stock", "difficulty": "Easy", "pattern": "Sliding Window"}
+{"problem_id": 124, "title": "Binary Tree Maximum Path Sum", "difficulty": "Hard", "pattern": "Trees"}
+{"problem_id": 125, "title": "Valid Palindrome", "difficulty": "Easy", "pattern": "Two Pointers"}
+{"problem_id": 128, "title": "Longest Consecutive Sequence", "difficulty": "Medium", "pattern": "Arrays & Hashing"}
+{"problem_id": 133, "title": "Clone Graph", "difficulty": "Medium", "pattern": "Graphs"}
+{"problem_id": 139, "title": "Word Break", "difficulty": "Medium", "pattern": "1-D Dynamic Programming"}
+{"problem_id": 141, "title": "Linked List Cycle", "difficulty": "Easy", "pattern": "Linked List"}
+{"problem_id": 143, "title": "Reorder List", "difficulty": "Medium", "pattern": "Linked List"}
+{"problem_id": 152, "title": "Maximum Product Subarray", "difficulty": "Medium", "pattern": "1-D Dynamic Programming"}
+{"problem_id": 153, "title": "Find Minimum In Rotated Sorted Array", "difficulty": "Medium", "pattern": "Binary Search"}
+{"problem_id": 190, "title": "Reverse Bits", "difficulty": "Easy", "pattern": "Bit Manipulation"}
+{"problem_id": 191, "title": "Number of 1 Bits", "difficulty": "Easy", "pattern": "Bit Manipulation"}
+{"problem_id": 198, "title": "House Robber", "difficulty": "Medium", "pattern": "1-D Dynamic Programming"}
+{"problem_id": 200, "title": "Number of Islands", "difficulty": "Medium", "pattern": "Graphs"}
+{"problem_id": 206, "title": "Reverse Linked List", "difficulty": "Easy", "pattern": "Linked List"}
+{"problem_id": 207, "title": "Course Schedule", "difficulty": "Medium", "pattern": "Graphs"}
+{"problem_id": 208, "title": "Implement Trie Prefix Tree", "difficulty": "Medium", "pattern": "Tries"}
+{"problem_id": 211, "title": "Design Add And Search Words Data Structure", "difficulty": "Medium", "pattern": "Tries"}
+{"problem_id": 212, "title": "Word Search II", "difficulty": "Hard", "pattern": "Tries"}
+{"problem_id": 213, "title": "House Robber II", "difficulty": "Medium", "pattern": "1-D Dynamic Programming"}
+{"problem_id": 217, "title": "Contains Duplicate", "difficulty": "Easy", "pattern": "Arrays & Hashing"}
+{"problem_id": 226, "title": "Invert Binary Tree", "difficulty": "Easy", "pattern": "Trees"}
+{"problem_id": 230, "title": "Kth Smallest Element In a Bst", "difficulty": "Medium", "pattern": "Trees"}
+{"problem_id": 235, "title": "Lowest Common Ancestor of a Binary Search Tree", "difficulty": "Medium", "pattern": "Trees"}
+{"problem_id": 238, "title": "Product of Array Except Self", "difficulty": "Medium", "pattern": "Arrays & Hashing"}
+{"problem_id": 242, "title": "Valid Anagram", "difficulty": "Easy", "pattern": "Arrays & Hashing"}
+{"problem_id": 252, "title": "Meeting Rooms", "difficulty": "Easy", "pattern": "Intervals"}
+{"problem_id": 253, "title": "Meeting Rooms II", "difficulty": "Medium", "pattern": "Intervals"}
+{"problem_id": 261, "title": "Graph Valid Tree", "difficulty": "Medium", "pattern": "Graphs"}
+{"problem_id": 268, "title": "Missing Number", "difficulty": "Easy", "pattern": "Bit Manipulation"}
+{"problem_id": 269, "title": "Alien Dictionary", "difficulty": "Hard", "pattern": "Advanced Graphs"}
+{"problem_id": 271, "title": "Encode and Decode Strings", "difficulty": "Medium", "pattern": "Arrays & Hashing"}
+{"problem_id": 295, "title": "Find Median From Data Stream", "difficulty": "Hard", "pattern": "Heap / Priority Queue"}
+{"problem_id": 297, "title": "Serialize And Deserialize Binary Tree", "difficulty": "Hard", "pattern": "Trees"}
+{"problem_id": 300, "title": "Longest Increasing Subsequence", "difficulty": "Medium", "pattern": "1-D Dynamic Programming"}
+{"problem_id": 322, "title": "Coin Change", "difficulty": "Medium", "pattern": "1-D Dynamic Programming"}
+{"problem_id": 323, "title": "Number of Connected Components In An Undirected Graph", "difficulty": "Medium", "pattern": "Graphs"}
+{"problem_id": 338, "title": "Counting Bits", "difficulty": "Easy", "pattern": "Bit Manipulation"}
+{"problem_id": 347, "title": "Top K Frequent Elements", "difficulty": "Medium", "pattern": "Arrays & Hashing"}
+{"problem_id": 371, "title": "Sum of Two Integers", "difficulty": "Medium", "pattern": "Bit Manipulation"}
+{"problem_id": 417, "title": "Pacific Atlantic Water Flow", "difficulty": "Medium", "pattern": "Graphs"}
+{"problem_id": 424, "title": "Longest Repeating Character Replacement", "difficulty": "Medium", "pattern": "Sliding Window"}
+{"problem_id": 435, "title": "Non Overlapping Intervals", "difficulty": "Medium", "pattern": "Intervals"}
+{"problem_id": 572, "title": "Subtree of Another Tree", "difficulty": "Easy", "pattern": "Trees"}
+{"problem_id": 647, "title": "Palindromic Substrings", "difficulty": "Medium", "pattern": "1-D Dynamic Programming"}
+{"problem_id": 1143, "title": "Longest Common Subsequence", "difficulty": "Medium", "pattern": "2-D Dynamic Programming"}

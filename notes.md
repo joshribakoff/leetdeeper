@@ -125,6 +125,20 @@
 
   **NeetCode's framing pitfall**: He describes it as "move bottom-right to bottom-left" — individual cell transfers. But you're actually processing entire edges. Thinking edge-by-edge makes the `i` offset intuitive instead of mysterious.
 
+## Trees
+
+- [ ] **Invert Binary Tree** - Swap every node's left and right children.
+
+  **Don't reach down two levels.** The temptation is to swap `left.left` with `right.right` — that's wrong. Each node only swaps its own two direct children. Recursion handles the rest.
+
+  **Traversal order matters**: Pre-order and post-order both work. **In-order breaks** — you recurse left (inverts it), then swap (old left is now right), then recurse "right" which is the subtree you already inverted. One side processed twice, the other zero.
+
+- [ ] **Binary Tree Maximum Path Sum** - Find max sum path in a binary tree (path doesn't have to go through root).
+
+  **Two different things computed simultaneously**: At each node, you *return* the best single-path going up (to your parent), but you *track* the best split-path through you (left + node + right) as a global max. The return value and the answer are different quantities.
+
+  **Why return only one side?** A path can't fork. If you return left + node + right to your parent, the parent would create a path that branches — that's not a valid path. So you pick the better side.
+
 ## Stack
 
 - [ ] **Valid Parentheses** - Match opening/closing brackets.

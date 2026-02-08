@@ -1,0 +1,42 @@
+{"index": 1, "title": "Introduction to data structures", "youtube_id": "92S4zgXN17o"}
+{"index": 2, "title": "Data Structures: List as abstract data type", "youtube_id": "HdFG8L1sajw"}
+{"index": 3, "title": "Introduction to linked list", "youtube_id": "NobHlGUjV3g"}
+{"index": 4, "title": "Data Structures: Arrays vs Linked Lists", "youtube_id": "lC-yYCOnN8Q"}
+{"index": 5, "title": "Linked List - Implementation in C/C++", "youtube_id": "vcQIFT79_50"}
+{"index": 6, "title": "Linked List in C/C++ - Inserting a node at beginning", "youtube_id": "cAZ8CyDY56s"}
+{"index": 7, "title": "Linked List in C/C++ - Insert a node at nth position", "youtube_id": "IbvsNF22Ud0"}
+{"index": 8, "title": "Linked List in C/C++ - Delete a node at nth position", "youtube_id": "Y0n86K43GO4"}
+{"index": 9, "title": "Reverse a linked list - Iterative method", "youtube_id": "sYcOK51hl-A"}
+{"index": 10, "title": "Print elements of a linked list in forward and reverse order using recursion", "youtube_id": "K7J3nCeRC80"}
+{"index": 11, "title": "Reverse a linked list using recursion", "youtube_id": "KYH83T4q6Vs"}
+{"index": 12, "title": "Data structures: Introduction to Doubly Linked List", "youtube_id": "JdQeNxWCguQ"}
+{"index": 13, "title": "Doubly Linked List - Implementation in C/C++", "youtube_id": "VOQNf1VxU3Q"}
+{"index": 14, "title": "Data structures: Introduction to stack", "youtube_id": "F1F2imiOJfk"}
+{"index": 15, "title": "Data structures: Array implementation of stacks", "youtube_id": "sFVxsglODoo"}
+{"index": 16, "title": "Data Structures: Linked List implementation of stacks", "youtube_id": "MuwxQ2IB8lQ"}
+{"index": 17, "title": "Reverse a string or linked list using stack.", "youtube_id": "hNP72JdOIgY"}
+{"index": 18, "title": "Check for balanced parentheses using stack", "youtube_id": "QZOLb0xHB_Q"}
+{"index": 19, "title": "Infix, Prefix and Postfix", "youtube_id": "jos1Flt21is"}
+{"index": 20, "title": "Evaluation of Prefix and Postfix expressions using stack", "youtube_id": "MeRb_1bddWg"}
+{"index": 21, "title": "Infix to Postfix using stack", "youtube_id": "vq-nUF0G4fI"}
+{"index": 22, "title": "Data structures: Introduction to Queues", "youtube_id": "XuCbpw6Bj1U"}
+{"index": 23, "title": "Data structures: Array implementation of Queue", "youtube_id": "okr-XE8yTO8"}
+{"index": 24, "title": "Data structures: Linked List implementation of Queue", "youtube_id": "A5_XdiK4J8A"}
+{"index": 25, "title": "Data structures: Introduction to Trees", "youtube_id": "qH6yxkw0u78"}
+{"index": 26, "title": "Data structures: Binary Tree", "youtube_id": "H5JubkIy_p8"}
+{"index": 27, "title": "Data structures: Binary Search Tree", "youtube_id": "pYT9F8_LFTM"}
+{"index": 28, "title": "Binary search tree - Implementation in C/C++", "youtube_id": "COZK7NATh4k"}
+{"index": 29, "title": "BST implementation -  memory allocation in stack and heap", "youtube_id": "hWokyBoo0aI"}
+{"index": 30, "title": "Find min and max element in a binary search tree", "youtube_id": "Ut90klNN264"}
+{"index": 31, "title": "Find height of a binary tree", "youtube_id": "_pnqMz5nrRs"}
+{"index": 32, "title": "Binary tree traversal - breadth-first and depth-first strategies", "youtube_id": "9RHO6jU--GU"}
+{"index": 33, "title": "Binary tree: Level Order Traversal", "youtube_id": "86g8jAQug04"}
+{"index": 34, "title": "Binary tree traversal: Preorder, Inorder, Postorder", "youtube_id": "gm8DUJJhmY4"}
+{"index": 35, "title": "Check if a binary tree is binary search tree or not", "youtube_id": "yEwSGhSsT0U"}
+{"index": 36, "title": "Delete a node from Binary Search Tree", "youtube_id": "gcULXE7ViZw"}
+{"index": 37, "title": "Inorder Successor in a binary search tree", "youtube_id": "5cPbNCrdotA"}
+{"index": 38, "title": "Data structures: Introduction to graphs", "youtube_id": "gXgEDyodOJU"}
+{"index": 39, "title": "Data structures: Properties of Graphs", "youtube_id": "AfYqN3fGapc"}
+{"index": 40, "title": "Graph Representation part 01 - Edge List", "youtube_id": "ZdY1Fp9dKzs"}
+{"index": 41, "title": "Graph Representation part 02 - Adjacency Matrix", "youtube_id": "9C2cpQZVRBA"}
+{"index": 42, "title": "Graph Representation part 03 - Adjacency List", "youtube_id": "k1wraWzqtvQ"}

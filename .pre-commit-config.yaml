@@ -1,0 +1,9 @@
+repos:
+  - repo: local
+    hooks:
+      - id: validate-progress
+        name: Validate playlist references
+        entry: python scripts/validate-progress.py
+        language: system
+        pass_filenames: false
+        always_run: true

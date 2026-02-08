@@ -31,5 +31,17 @@ watch_progress.jsonl
 # Download logs (generated)
 download_log.jsonl
 
+# Node
+node_modules/
+package-lock.json
+
+# Logs
+*.log
+download_status.json
+
+# Thumbnails & static assets (downloaded)
+thumbs/
+static/
+
 # macOS
 .DS_Store
