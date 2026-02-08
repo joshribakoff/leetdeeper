@@ -7,6 +7,9 @@
     "max_video": 600
   },
   "playlists": {
+    "neetcode-intervals": {
+      "priority": 1
+    },
     "sweep-line": {
       "priority": 1
     },
