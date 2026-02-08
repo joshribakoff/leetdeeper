@@ -26,11 +26,8 @@ def get_download_progress() -> list[dict]:
     results = []
 
     for name, pl_cfg in cfg.get("playlists", {}).items():
-        if "jsonl" in pl_cfg:
-            jsonl_path = PLAYLISTS_DIR / pl_cfg["jsonl"]
-        else:
-            jsonl_name = f"youtube_{name.replace('-', '_')}.jsonl"
-            jsonl_path = PLAYLISTS_DIR / jsonl_name
+        jsonl_name = f"youtube_{name.replace('-', '_')}.jsonl"
+        jsonl_path = PLAYLISTS_DIR / jsonl_name
 
         if not jsonl_path.exists():
             results.append({
