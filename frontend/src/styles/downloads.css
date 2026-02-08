@@ -16,6 +16,7 @@
 
 .status-running { font-size: 0.7rem; color: var(--green); margin-left: 0.5rem; font-weight: 400; text-transform: uppercase; letter-spacing: 0.05em; }
 .status-idle { font-size: 0.7rem; color: var(--dim); margin-left: 0.5rem; font-weight: 400; text-transform: uppercase; letter-spacing: 0.05em; }
+.status-error { font-size: 0.7rem; color: #fb7185; margin-left: 0.5rem; font-weight: 400; text-transform: uppercase; letter-spacing: 0.05em; }
 
 .eta-badge {
   background: rgba(52, 211, 153, 0.1);
@@ -24,6 +25,10 @@
   border-radius: var(--radius);
   font-size: 0.75rem;
   font-variant-numeric: tabular-nums;
+}
+.eta-badge--accent {
+  background: rgba(129, 140, 248, 0.1);
+  color: var(--accent);
 }
 
 .dl-flash { animation: flash-green 1.5s ease-out; }
@@ -101,7 +106,8 @@
 }
 .live-banner--active { border-color: var(--green); border-left: 3px solid var(--green); }
 .live-banner--waiting { border-color: var(--accent); border-left: 3px solid var(--accent); }
-.live-banner--error { border-color: #fb7185; border-left: 3px solid #fb7185; color: #fb7185; }
+.live-banner--error { border-color: #fb7185; border-left: 3px solid #fb7185; color: #fb7185; flex-direction: column; align-items: flex-start; }
+.failed-list { margin: 0.5rem 0 0; padding-left: 1.2rem; font-size: 0.8rem; color: var(--dim); }
 .live-banner-text { flex: 1; }
 .live-banner-detail { width: 100%; color: var(--dim); font-size: 0.8rem; margin-top: 0.25rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
@@ -123,4 +129,56 @@
   background: var(--accent);
   border-radius: 2px;
   transition: width 1s linear;
+}
+
+/* Two-column layout */
+
+.dl-columns {
+  display: grid;
+  grid-template-columns: 1fr 260px;
+  gap: 1.5rem;
+  align-items: start;
+}
+.dl-col-main { min-width: 0; }
+.dl-col-side { position: sticky; top: 64px; display: flex; flex-direction: column; gap: 1rem; }
+.dl-sidebar-section {}
+
+@media (max-width: 768px) {
+  .dl-columns { grid-template-columns: 1fr; }
+}
+
+/* Download progress inside live banner */
+
+.dl-progress-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  width: 100%;
+  margin-top: 0.35rem;
+}
+.dl-progress-bar {
+  flex: 1;
+  height: 6px;
+  background: var(--bar-bg);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.dl-progress-fill {
+  height: 100%;
+  background: var(--green);
+  border-radius: 3px;
+  transition: width 2s linear;
+}
+.dl-progress-pct {
+  font-size: 0.8rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  min-width: 3.5rem;
+  color: var(--green);
+}
+.dl-progress-stat {
+  font-size: 0.75rem;
+  color: var(--dim);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }

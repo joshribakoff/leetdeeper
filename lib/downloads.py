@@ -113,24 +113,44 @@ def get_download_activity() -> dict:
     except (KeyError, ValueError):
         pass
 
+    # Average download duration (from elapsed_sec field if present)
+    dl_times = [e["elapsed_sec"] for e in downloads[-20:] if "elapsed_sec" in e]
+    avg_dl_sec = round(sum(dl_times) / len(dl_times)) if dl_times else None
+
     # ETA: remaining videos * pace
     eta_sec = None
+    remaining = 0
     if pace_sec:
         playlists = get_download_progress()
         remaining = sum(p["total"] - p["downloaded"] for p in playlists)
         if remaining > 0:
             eta_sec = int(remaining * pace_sec)
 
+    # Next download estimate: last download time + pace
+    next_download_at = None
+    if running and pace_sec and downloads:
+        try:
+            last_dl_ts = datetime.fromisoformat(downloads[-1]["timestamp"])
+            next_dt = last_dl_ts.timestamp() + pace_sec
+            if next_dt > datetime.now().timestamp():
+                next_download_at = next_dt
+        except (KeyError, ValueError):
+            pass
+
     return {
         "recent": [{
             "playlist": e.get("playlist", ""),
             "youtube_id": e.get("youtube_id", ""),
             "index": e.get("index"),
+            "title": e.get("title", ""),
             "timestamp": e.get("timestamp", ""),
         } for e in recent],
         "pace": round(pace_sec) if pace_sec else None,
+        "avg_download_sec": avg_dl_sec,
         "eta": eta_sec,
+        "remaining": remaining,
         "running": running,
+        "next_download_at": next_download_at,
         "last_event": {
             "type": last_event.get("type", ""),
             "timestamp": last_event.get("timestamp", ""),
@@ -147,9 +167,10 @@ def get_live_status() -> dict | None:
     try:
         data = json.loads(STATUS_FILE.read_text())
         # Check staleness — if status is > 30 min old, consider idle
+        # But keep stopped/rate_limited states visible until next run
         ts = datetime.fromisoformat(data.get("timestamp", ""))
         age = (datetime.now() - ts).total_seconds()
-        if age > 1800:
+        if age > 1800 and data.get("state") not in ("stopped", "rate_limited"):
             return None
         return data
     except (json.JSONDecodeError, ValueError):
@@ -157,9 +178,9 @@ def get_live_status() -> dict | None:
 
 
 def get_change_mtime() -> float:
-    """Return max mtime of log + status files for change detection."""
+    """Return max mtime of log + status + config files for change detection."""
     mtimes = []
-    for f in (LOG_FILE, STATUS_FILE):
+    for f in (LOG_FILE, STATUS_FILE, CONFIG_FILE):
         try:
             mtimes.append(f.stat().st_mtime)
         except OSError:

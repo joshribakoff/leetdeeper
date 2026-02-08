@@ -166,6 +166,21 @@ function LiveStatusBanner({ live }: { live: LiveStatus | null }) {
     )
   }
 
+  if (live.state === 'stopped') {
+    return (
+      <div className="live-banner live-banner--error">
+        <strong>{live.playlist}</strong>: {live.failed_count} video{live.failed_count !== 1 ? 's' : ''} failed to download
+        {live.failed_titles && (
+          <ul className="failed-list">
+            {live.failed_titles.map((title: string, i: number) => (
+              <li key={i}>{title}</li>
+            ))}
+          </ul>
+        )}
+      </div>
+    )
+  }
+
   return null
 }
 
@@ -270,6 +285,7 @@ export default function Downloads() {
           {data!.live?.state === 'downloading' && <><LiveDot running /><span className="status-running">downloading</span></>}
           {data!.live?.state === 'waiting' && <><LiveDot running /><span className="status-running">waiting</span></>}
           {data!.live?.state === 'rate_limited' && <span className="status-error">rate limited</span>}
+          {data!.live?.state === 'stopped' && <span className="status-error">stopped — {data!.live.failed_count} failed</span>}
           {!data!.live && activity.running && <><LiveDot running /><span className="status-running">running</span></>}
           {!data!.live && !activity.running && <span className="status-idle">idle</span>}
         </h1>
