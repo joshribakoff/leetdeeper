@@ -1,4 +1,5 @@
 import { useMemo, useState, useEffect, useRef } from 'react'
+import { Link } from 'react-router-dom'
 import { useQueryClient } from '@tanstack/react-query'
 import { useApi } from '../hooks/useApi'
 import { useMutationAction } from '../hooks/useMutationAction'
@@ -220,6 +221,7 @@ export default function Downloads() {
     {
       accessorKey: 'label',
       header: 'Playlist',
+      cell: ({ row }) => <Link to={`/playlists/${row.original.name}`}>{row.original.label}</Link>,
     },
     {
       id: 'creator',
