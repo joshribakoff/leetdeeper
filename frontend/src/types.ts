@@ -63,7 +63,7 @@ export interface DownloadPlaylist {
 }
 
 export interface LiveStatus {
-  state: 'downloading' | 'waiting' | 'rate_limited'
+  state: 'downloading' | 'waiting' | 'rate_limited' | 'stopped' | 'idle'
   playlist?: string
   index?: number
   total?: number
@@ -75,6 +75,8 @@ export interface LiveStatus {
   timestamp?: string
   resume_at?: number
   delay_sec?: number
+  failed_count?: number
+  failed_titles?: string[]
 }
 
 export interface DownloadActivity {

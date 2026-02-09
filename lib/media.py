@@ -111,13 +111,11 @@ def _load_overrides() -> dict:
 def find_article(title: str) -> str | None:
     """Derive article slug from video title, check if file exists."""
     import re
-    # Check title overrides first (for mismatched naming)
     overrides = _load_overrides()
     if title in overrides:
         slug = overrides[title]
         if (ARTICLES_DIR / f"{slug}.md").exists():
             return slug
-    # Auto-derive: strip "- Leetcode NNN" suffix, slugify
     slug = re.sub(r"\s*-\s*[Ll]eet[Cc]ode\s*\d+\s*$", "", title)
     slug = slug.strip().lower().replace(" ", "-")
     slug = re.sub(r"[^a-z0-9-]", "", slug)

@@ -2,7 +2,9 @@
 """LeetDeeper API server. JSON-only — frontend served by Vite in dev."""
 
 import json
+import os
 import subprocess
+import sys
 import time
 from pathlib import Path
 from flask import Flask, Response, jsonify, send_from_directory
@@ -11,7 +13,7 @@ from lib.playlists import list_playlists, load_playlist
 from lib.progress import playlist_progress, get_watched_ids, overall_summary, toggle_watched
 from lib.media import enrich_videos
 from lib.patterns import analyze_by_pattern
-from lib.downloads import get_download_progress, get_download_config, update_download_config, get_download_activity, get_change_mtime, get_live_status
+from lib.downloads import get_download_progress, get_download_config, update_download_config, get_download_activity, get_change_mtime, get_live_status, is_downloader_running
 
 VIDEOS_DIR = Path(__file__).parent / "videos" / "by-id"
 PINNED_PATH = Path(__file__).parent / "progress" / "pinned.json"
@@ -160,6 +162,31 @@ def api_update_downloads_config():
     from flask import request
     update_download_config(request.json)
     return jsonify({"ok": True})
+
+
+@app.route("/api/downloads/start", methods=["POST"])
+def api_downloads_start():
+    running, pid = is_downloader_running()
+    if running:
+        return jsonify({"error": "already running", "pid": pid}), 409
+    script = Path(__file__).parent / "scripts" / "download_playlists.py"
+    proc = subprocess.Popen(
+        [sys.executable, str(script)],
+        start_new_session=True,
+        stdout=open(os.devnull, "w"),
+        stderr=open(os.devnull, "w"),
+    )
+    return jsonify({"ok": True, "pid": proc.pid})
+
+
+@app.route("/api/downloads/stop", methods=["POST"])
+def api_downloads_stop():
+    import signal as sig
+    running, pid = is_downloader_running()
+    if not running:
+        return jsonify({"error": "not running"}), 409
+    os.kill(pid, sig.SIGTERM)
+    return jsonify({"ok": True, "pid": pid})
 
 
 if __name__ == "__main__":

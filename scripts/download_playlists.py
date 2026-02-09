@@ -15,6 +15,8 @@ import time
 import os
 import sys
 import json
+import signal
+import atexit
 import argparse
 from pathlib import Path
 from datetime import datetime
@@ -27,6 +29,7 @@ PLAYLISTS_DIR = REPO_ROOT / "playlists"
 LOG_FILE = REPO_ROOT / "download_log.jsonl"
 CONFIG_FILE = REPO_ROOT / "download_config.json"
 STATUS_FILE = REPO_ROOT / "download_status.json"
+PID_FILE = REPO_ROOT / "downloader.pid"
 
 DENO_PATH = os.path.expanduser("~/.deno/bin")
 FFMPEG_PATH = os.path.expanduser("~/.local/bin")
@@ -61,6 +64,41 @@ def get_env():
     env = os.environ.copy()
     env["PATH"] = f"{DENO_PATH}:{FFMPEG_PATH}:{env['PATH']}"
     return env
+
+
+def write_pid():
+    """Write PID file. Exit if another instance is already running."""
+    if PID_FILE.exists():
+        try:
+            old_pid = int(PID_FILE.read_text().strip())
+            os.kill(old_pid, 0)
+            log(f"Downloader already running (PID {old_pid}). Exiting.")
+            sys.exit(1)
+        except (ProcessLookupError, ValueError):
+            pass  # stale PID file
+    PID_FILE.write_text(str(os.getpid()))
+
+
+def cleanup_pid():
+    """Delete PID file if it belongs to us."""
+    try:
+        if PID_FILE.exists() and int(PID_FILE.read_text().strip()) == os.getpid():
+            PID_FILE.unlink()
+    except (ValueError, OSError):
+        pass
+
+
+def setup_signal_handlers():
+    """Register cleanup on exit and SIGTERM."""
+    atexit.register(cleanup_pid)
+
+    def _handle_term(signum, frame):
+        log("Received SIGTERM, shutting down...")
+        write_status("idle")
+        cleanup_pid()
+        sys.exit(0)
+
+    signal.signal(signal.SIGTERM, _handle_term)
 
 
 def get_playlist_info(url: str) -> dict:
@@ -449,6 +487,9 @@ def main():
     parser.add_argument("--playlist", type=str, help="Download only this playlist")
     args = parser.parse_args()
 
+    setup_signal_handlers()
+    write_pid()
+
     cfg = load_config()
     playlists = cfg.get("playlists", {})
     mode = cfg.get("mode", "priority")
@@ -470,6 +511,8 @@ def main():
 
     log("All downloads complete")
     log_event({"type": "run_complete"})
+    write_status("idle")
+    cleanup_pid()
 
 
 if __name__ == "__main__":

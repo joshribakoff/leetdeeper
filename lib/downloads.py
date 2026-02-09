@@ -11,6 +11,22 @@ BY_ID_DIR = REPO_ROOT / "videos" / "by-id"
 CONFIG_FILE = REPO_ROOT / "download_config.json"
 LOG_FILE = REPO_ROOT / "download_log.jsonl"
 STATUS_FILE = REPO_ROOT / "download_status.json"
+PID_FILE = REPO_ROOT / "downloader.pid"
+
+
+def is_downloader_running() -> tuple[bool, int | None]:
+    """Check if downloader process is alive via PID file."""
+    if not PID_FILE.exists():
+        return False, None
+    try:
+        pid = int(PID_FILE.read_text().strip())
+        os.kill(pid, 0)
+        return True, pid
+    except (ProcessLookupError, ValueError):
+        PID_FILE.unlink(missing_ok=True)
+        return False, None
+    except PermissionError:
+        return True, pid  # process exists but we can't signal it
 
 
 def load_config() -> dict:
@@ -98,17 +114,9 @@ def get_download_activity() -> dict:
         except (KeyError, ValueError):
             pass
 
-    # Is it running? Check if last event was recent (within 30 min)
+    # Is it running? Use PID file as source of truth
     last_event = events[-1]
-    running = False
-    last_ts = None
-    try:
-        last_ts = datetime.fromisoformat(last_event["timestamp"])
-        age = (datetime.now() - last_ts).total_seconds()
-        # Consider running if last event < 30 min ago and wasn't a run_complete or rate_limit
-        running = age < 1800 and last_event.get("type") not in ("run_complete", "rate_limit_detected")
-    except (KeyError, ValueError):
-        pass
+    running, _ = is_downloader_running()
 
     # Average download duration (from elapsed_sec field if present)
     dl_times = [e["elapsed_sec"] for e in downloads[-20:] if "elapsed_sec" in e]
@@ -177,7 +185,7 @@ def get_live_status() -> dict | None:
 def get_change_mtime() -> float:
     """Return max mtime of log + status + config files for change detection."""
     mtimes = []
-    for f in (LOG_FILE, STATUS_FILE, CONFIG_FILE):
+    for f in (LOG_FILE, STATUS_FILE, CONFIG_FILE, PID_FILE):
         try:
             mtimes.append(f.stat().st_mtime)
         except OSError:

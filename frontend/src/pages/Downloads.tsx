@@ -263,6 +263,16 @@ export default function Downloads() {
     { invalidate: ['downloads'] },
   )
 
+  const startMutation = useMutationAction<void>(
+    () => fetch('/api/downloads/start', { method: 'POST' }),
+    { invalidate: ['downloads'] },
+  )
+
+  const stopMutation = useMutationAction<void>(
+    () => fetch('/api/downloads/stop', { method: 'POST' }),
+    { invalidate: ['downloads'] },
+  )
+
   if (isLoading) return <Loading />
   if (error) return <ErrorMsg error={error} />
 
@@ -273,6 +283,9 @@ export default function Downloads() {
   const totalVids = data!.playlists.reduce((s, p) => s + p.total, 0)
   const totalDl = data!.playlists.reduce((s, p) => s + p.downloaded, 0)
   const activity = data!.activity || {}
+
+  const isRunning = activity.running ||
+    data!.live?.state === 'downloading' || data!.live?.state === 'waiting'
 
   const toggleMode = () => {
     const next = data!.config.mode === 'priority' ? 'round-robin' : 'priority'
@@ -289,7 +302,7 @@ export default function Downloads() {
           {data!.live?.state === 'rate_limited' && <span className="status-error">rate limited</span>}
           {data!.live?.state === 'stopped' && <span className="status-error">stopped — {data!.live.failed_count} failed</span>}
           {!data!.live && activity.running && <><LiveDot running /><span className="status-running">running</span></>}
-          {!data!.live && !activity.running && <span className="status-idle">idle</span>}
+          {!data!.live && !activity.running && <span className="status-idle">stopped</span>}
         </h1>
         <div className="meta">
           <span className={flash ? 'dl-flash' : ''}>{totalDl}/{totalVids} downloaded</span>
@@ -300,6 +313,12 @@ export default function Downloads() {
           <span>mode: {data!.config.mode}</span>
           <button className="btn-play" onClick={toggleMode}>
             switch to {data!.config.mode === 'priority' ? 'round-robin' : 'priority'}
+          </button>
+          <button className="btn-dl-start" onClick={() => startMutation.mutate()} disabled={isRunning}>
+            Start
+          </button>
+          <button className="btn-dl-stop" onClick={() => stopMutation.mutate()} disabled={!isRunning}>
+            Stop
           </button>
         </div>
         <ProgressBar value={totalDl} max={totalVids} />

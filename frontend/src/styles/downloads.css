@@ -37,6 +37,24 @@
   100% { color: var(--dim); text-shadow: none; }
 }
 
+/* Start/Stop buttons */
+
+.btn-dl-start, .btn-dl-stop {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font: inherit;
+  font-size: 0.8rem;
+  padding: 0.25rem 0.6rem;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s, opacity 0.15s;
+}
+.btn-dl-start { color: var(--green); border-color: var(--green); }
+.btn-dl-start:hover:not(:disabled) { background: rgba(52, 211, 153, 0.1); }
+.btn-dl-stop { color: #fb7185; border-color: #fb7185; }
+.btn-dl-stop:hover:not(:disabled) { background: rgba(251, 113, 133, 0.1); }
+.btn-dl-start:disabled, .btn-dl-stop:disabled { opacity: 0.3; cursor: default; }
+
 /* Activity feed */
 
 .activity-feed { list-style: none; }
